@@ -119,7 +119,18 @@ button:disabled { opacity: 0.6; cursor: not-allowed; background-color: var(--pri
 
 /* --- Sekce Hrej s YUME --- */
 #hrat h2, #hrat p { text-align: center; } #chess-game-placeholder { margin-top: 2rem; padding: 30px; background-color: var(--secondary-color); border: 1px solid var(--border-color); border-radius: 8px; text-align: center; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; } #chess-game-placeholder h3 { color: var(--primary-color); } .loading-spinner { border: 4px solid var(--secondary-color); border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } #chess-game-placeholder p { font-size: 0.9rem; color: var(--primary-color); max-width: 500px; margin: 10px auto; } #claim-reward-btn { margin-top: 20px; }
-
+ .chess-iframe-container {
+     text-align: center;
+     margin-top: 2rem;
+     padding: 20px;
+     background-color: var(--secondary-color);
+     border: 1px solid var(--border-color);
+     border-radius: 8px;
+ }
+ .chess-iframe-container iframe {
+     max-width: 100%;
+     border: 1px solid var(--border-color);
+ }
 /* --- Sekce Kontakt (Vylepšená) --- */
 #kontakt .lead, #kontakt h2 { text-align: center; }
 .contact-wrapper { display: flex; flex-wrap: wrap; gap: 40px; margin-top: 3rem; align-items: stretch; background-color: var(--secondary-color); padding: 40px; border-radius: 8px; border: 1px solid var(--border-color); }
