@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => document.querySelectorAll(selector);
 
+    // --- Globální proměnné ---
+    let cart = JSON.parse(sessionStorage.getItem('yumeCart')) || []; // Načíst košík ze session storage
+
     // --- Přepínač Light/Dark Módu ---
     const themeToggleButton = $('#theme-toggle-button');
     const body = document.body;
@@ -18,100 +21,257 @@ document.addEventListener('DOMContentLoaded', function() {
     showSection('#home');
 
     // --- Login/Register Dropdown ---
-    const loginRegisterBtn = $('#login-register-btn');
-    const loginDropdown = $('#login-dropdown');
+    const loginRegisterBtn = $('#login-register-btn'); const loginDropdown = $('#login-dropdown');
+    if (loginRegisterBtn && loginDropdown) { /* ... kód pro dropdown ... */ loginRegisterBtn.addEventListener('click', (e) => { e.stopPropagation(); loginDropdown.classList.toggle('hidden'); }); document.addEventListener('click', (e) => { if (!loginDropdown.contains(e.target) && e.target !== loginRegisterBtn && !loginRegisterBtn.contains(e.target)) { loginDropdown.classList.add('hidden'); } }); }
+    const tabButtons = $$('#login-dropdown .tab-btn'); const tabContents = $$('#login-dropdown .tab-content'); tabButtons.forEach(button => { /* ... kód pro taby ... */ button.addEventListener('click', () => { const targetTab = button.getAttribute('data-tab'); tabButtons.forEach(btn => btn.classList.toggle('active', btn === button)); tabContents.forEach(content => { content.classList.toggle('active', content.id === `${targetTab}-tab`); }); }); });
+    const loginForm = $('#login-form'); const registerForm = $('#register-form'); if(loginForm) { /* ... kód form ... */ loginForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o přihlášení...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); } if(registerForm) { /* ... kód form ... */ registerForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o registraci...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); }
 
-    if (loginRegisterBtn && loginDropdown) {
-        loginRegisterBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Zastavit šíření, aby se nezavřelo hned kliknutím na tlačítko
-            loginDropdown.classList.toggle('hidden');
+    // --- Modální Okna (Výherní a Košík) ---
+    const modalOverlay = $('#modal-overlay'); const allModals = $$('.modal');
+    const prizePopup = $('#prize-popup'); const prizePopupText = $('#prize-popup-text'); const prizePopupInfo = $('#prize-popup-info'); const prizePopupEmoji = $('.prize-emoji-big'); const prizePopupCloseBtns = $$('#prize-popup .close-modal-btn, #prize-popup .close-modal-btn-bottom');
+    const cartModal = $('#cart-modal'); const cartBtn = $('#cart-btn'); const cartModalCloseBtn = $('#cart-modal .close-modal-btn');
+
+    function openModal(modalElement) {
+        if (!modalElement) return;
+        closeAllModals(); // Zavřít ostatní před otevřením nového
+        modalOverlay.classList.remove('hidden');
+        modalElement.classList.remove('hidden');
+        body.style.overflow = 'hidden';
+        // Pokud otevíráme košík, vykreslit jeho obsah
+        if(modalElement.id === 'cart-modal') {
+            renderCartItems();
+        }
+    }
+    function closeModal() {
+        modalOverlay.classList.add('hidden');
+        allModals.forEach(modal => modal.classList.add('hidden'));
+        body.style.overflow = '';
+    }
+     function closeAllModals() { // Pomocná fce pro zavření všech modalů
+        modalOverlay.classList.add('hidden');
+        allModals.forEach(modal => modal.classList.add('hidden'));
+        body.style.overflow = '';
+    }
+
+    // Zavření kliknutím na overlay nebo křížek (pro všechny modaly)
+    modalOverlay.addEventListener('click', closeModal);
+    $$('.close-modal-btn').forEach(btn => btn.addEventListener('click', closeModal));
+    prizePopupCloseBtns.forEach(btn => btn.addEventListener('click', closeModal)); // Specifické pro výherní
+
+    // Otevření Košíku
+    if(cartBtn && cartModal) {
+        cartBtn.addEventListener('click', () => openModal(cartModal));
+    }
+
+    // --- Nákupní Košík Logic ---
+    const cartCountElement = $('#cart-count');
+    const cartItemsContainer = $('#cart-items-container');
+    const cartTotalElement = $('#cart-total');
+    const checkoutBtn = $('#checkout-btn');
+    const emptyCartMessage = $('.empty-cart-message');
+
+    function saveCart() {
+        sessionStorage.setItem('yumeCart', JSON.stringify(cart));
+    }
+
+    function updateCartIcon() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        if (cartCountElement) {
+            cartCountElement.textContent = totalItems;
+            cartCountElement.classList.toggle('hidden', totalItems === 0);
+             // Malý vizuální efekt při změně počtu
+             if (totalItems > 0) {
+                 cartCountElement.classList.add('updated');
+                 setTimeout(() => cartCountElement.classList.remove('updated'), 300);
+             }
+        }
+    }
+
+    function formatPrice(price) {
+        return new Intl.NumberFormat('cs-CZ', { style: 'currency', currency: 'CZK', minimumFractionDigits: 0 }).format(price);
+    }
+
+    function addToCart(productId, productName, productPrice, productImage) {
+        const existingItemIndex = cart.findIndex(item => item.id === productId);
+        if (existingItemIndex > -1) {
+            cart[existingItemIndex].quantity++;
+        } else {
+            cart.push({
+                id: productId,
+                name: productName,
+                price: parseFloat(productPrice), // Ujistit se, že cena je číslo
+                image: productImage,
+                quantity: 1
+            });
+        }
+        saveCart();
+        updateCartIcon();
+        // Vizuální feedback na tlačítku (volitelné)
+        const button = $(`[data-product-id="${productId}"] .add-to-cart-btn`);
+        if (button) {
+            button.textContent = 'Přidáno ✓';
+            button.classList.add('added');
+            button.disabled = true;
+            setTimeout(() => {
+                 button.textContent = 'Do košíku';
+                 button.classList.remove('added');
+                 button.disabled = false;
+            }, 1500);
+        }
+    }
+
+    function updateQuantity(productId, newQuantity) {
+        const itemIndex = cart.findIndex(item => item.id === productId);
+        if (itemIndex > -1) {
+            cart[itemIndex].quantity = Math.max(1, newQuantity); // Minimálně 1 kus
+            saveCart();
+            updateCartIcon();
+            renderCartItems(); // Znovu vykreslit košík pro aktualizaci ceny a celkové sumy
+        }
+    }
+
+    function removeFromCart(productId) {
+        cart = cart.filter(item => item.id !== productId);
+        saveCart();
+        updateCartIcon();
+        renderCartItems(); // Znovu vykreslit košík
+    }
+
+    function renderCartItems() {
+        if (!cartItemsContainer || !cartTotalElement || !checkoutBtn || !emptyCartMessage) return;
+
+        cartItemsContainer.innerHTML = ''; // Vyčistit předchozí obsah
+        let total = 0;
+
+        if (cart.length === 0) {
+            emptyCartMessage.classList.remove('hidden');
+            checkoutBtn.disabled = true;
+        } else {
+            emptyCartMessage.classList.add('hidden');
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item');
+                itemElement.innerHTML = `
+                    <div class="cart-item-image">
+                        <img src="${item.image}" alt="${item.name}" />
+                    </div>
+                    <div class="cart-item-details">
+                        <h4>${item.name}</h4>
+                        <p class="cart-item-price">${formatPrice(item.price)} / ks</p>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="quantity-btn" data-id="${item.id}" data-change="-1">-</button>
+                        <input type="number" value="${item.quantity}" min="1" data-id="${item.id}" class="quantity-input" aria-label="Množství"/>
+                        <button class="quantity-btn" data-id="${item.id}" data-change="1">+</button>
+                    </div>
+                     <button class="cart-item-remove-btn" title="Odstranit" data-id="${item.id}">×</button>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+            checkoutBtn.disabled = false;
+        }
+
+        cartTotalElement.textContent = formatPrice(total);
+
+        // Přidat listenery pro nově vytvořené prvky košíku
+        $$('.quantity-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const change = parseInt(btn.getAttribute('data-change'));
+                const item = cart.find(i => i.id === id);
+                if (item) {
+                    updateQuantity(id, item.quantity + change);
+                }
+            });
         });
+        $$('.quantity-input').forEach(input => {
+            input.addEventListener('change', () => {
+                const id = input.getAttribute('data-id');
+                const newQuantity = parseInt(input.value);
+                updateQuantity(id, newQuantity);
+            });
+        });
+        $$('.cart-item-remove-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (confirm('Opravdu chcete odstranit tuto položku z košíku?')) {
+                     const id = btn.getAttribute('data-id');
+                     removeFromCart(id);
+                }
+            });
+        });
+    }
 
-        // Zavření dropdownu při kliknutí kamkoli jinam
-        document.addEventListener('click', (e) => {
-            // Pokud klik není na dropdown ANI na tlačítko pro jeho otevření
-            if (!loginDropdown.contains(e.target) && e.target !== loginRegisterBtn && !loginRegisterBtn.contains(e.target)) {
-                loginDropdown.classList.add('hidden');
+    // Listener pro tlačítka "Do košíku" na produktech
+    $$('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const productElement = button.closest('.product-item');
+            if (productElement) {
+                const id = productElement.getAttribute('data-product-id');
+                const name = productElement.getAttribute('data-product-name');
+                const price = productElement.getAttribute('data-product-price');
+                const image = productElement.getAttribute('data-product-image');
+                addToCart(id, name, price, image);
+            }
+        });
+    });
+
+    // Listener pro tlačítko Checkout (simulace)
+    if(checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length > 0) {
+                alert('Pokračujete k pokladně...\n(Toto je pouze simulace, žádná platba neproběhne.)');
+                // Zde byste mohli např. vyprázdnit košík po "objednání"
+                // cart = [];
+                // saveCart();
+                // updateCartIcon();
+                closeModal(); // Zavřít okno košíku
             }
         });
     }
 
-    // Přepínání tabů v Login/Register dropdownu
-    const tabButtons = $$('#login-dropdown .tab-btn');
-    const tabContents = $$('#login-dropdown .tab-content');
-    tabButtons.forEach(button => { button.addEventListener('click', () => { const targetTab = button.getAttribute('data-tab'); tabButtons.forEach(btn => btn.classList.toggle('active', btn === button)); tabContents.forEach(content => { content.classList.toggle('active', content.id === `${targetTab}-tab`); }); }); });
-
-    // Zpracování formulářů v Login/Register dropdownu (ukázka)
-     const loginForm = $('#login-form'); const registerForm = $('#register-form');
-     if(loginForm) { loginForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o přihlášení...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); }
-     if(registerForm) { registerForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o registraci...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); }
-
-
-    // --- Výherní Modální Okno ---
-    const modalOverlay = $('#modal-overlay'); const prizePopup = $('#prize-popup'); const prizePopupText = $('#prize-popup-text'); const prizePopupInfo = $('#prize-popup-info'); const prizePopupEmoji = $('.prize-emoji-big'); const prizePopupCloseBtns = $$('#prize-popup .close-modal-btn, #prize-popup .close-modal-btn-bottom');
-    function openPrizePopup(prize) { /* ... kód ... */ if (!prizePopup || !prizePopupText || !prizePopupInfo || !prizePopupEmoji) return; prizePopupText.innerHTML = prize.text; prizePopupInfo.textContent = prize.info; if (prize.text.includes('Sleva')) prizePopupEmoji.textContent = '🏷️'; else if (prize.text.includes('Doprava')) prizePopupEmoji.textContent = '🚚'; else if (prize.text.includes('Nálepka') || prize.text.includes('Klíčenka')) prizePopupEmoji.textContent = '🎁'; else prizePopupEmoji.textContent = '🎉'; modalOverlay.classList.remove('hidden'); prizePopup.classList.remove('hidden'); body.style.overflow = 'hidden'; }
-    function closePrizePopup() { /* ... kód ... */ modalOverlay.classList.add('hidden'); if(prizePopup) prizePopup.classList.add('hidden'); body.style.overflow = ''; }
-    modalOverlay.addEventListener('click', closePrizePopup); prizePopupCloseBtns.forEach(btn => btn.addEventListener('click', closePrizePopup));
-
-
-    // --- Jednoduchá Slideshow (beze změny) ---
-    const slides = $$('.slide'); const prevButton = $('.slide-prev'); const nextButton = $('.slide-next'); let currentSlide = 0; let slideInterval;
-    if (slides.length > 0) { /* ... kód slideshow ... */ const totalSlides = slides.length; function showSlide(index) { slides.forEach((s, i) => s.classList.toggle('active', i === index)); } function nextSlide() { currentSlide = (currentSlide + 1) % totalSlides; showSlide(currentSlide); } function prevSlide() { currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; showSlide(currentSlide); } function startSlideShow() { stopSlideShow(); slideInterval = setInterval(nextSlide, 5500); } function stopSlideShow() { clearInterval(slideInterval); } showSlide(currentSlide); if (prevButton && nextButton) { prevButton.addEventListener('click', () => { prevSlide(); stopSlideShow(); }); nextButton.addEventListener('click', () => { nextSlide(); stopSlideShow(); }); } startSlideShow(); const slideshowElement = $('.slideshow'); if (slideshowElement) { slideshowElement.addEventListener('mouseenter', stopSlideShow); slideshowElement.addEventListener('mouseleave', startSlideShow); } }
-
-
-    // --- Kolotoč Štěstí (Se zvukem) ---
-    const wheel = $('#wheel'); const spinButton = $('#spin-button'); const resultDisplay = $('#result-display'); const wheelSpinSound = $('#wheel-spin-sound'); // Audio element
-    const prizes = [ /* ... pole výher s emoji ... */ { text: '🏷️ Sleva 15%', info: 'Použijte kód YUME15 při placení!' }, { text: '🚚 Doprava Zdarma', info: 'Automaticky aplikováno na vaši příští objednávku.' }, { text: '🎁 YUME Nálepka Pack', info: 'Přidáme zdarma k vaší příští objednávce.' }, { text: '🏷️ Sleva 5%', info: 'Použijte kód YUME5 při placení!' }, { text: '😞 Nic (Zkus to zítra!)', info: '' }, { text: '🌟 Exkluzivní Přístup', info: 'Odešleme vám e-mail s přednostním přístupem k novinkám.' }, { text: '🎁 YUME Klíčenka', info: 'Přidáme zdarma k vaší příští objednávce.' }, { text: '🏷️ Sleva 10%', info: 'Použijte kód YUME10 při placení!' }, { text: '✨ Malé Překvapení', info: 'Nechte se překvapit malým dárkem ve vaší příští objednávce!' }, { text: '😞 Nic (Více štěstí příště!)', info: '' } ];
+    // --- Kolotoč Štěstí (Se zvukem a opravenou animací) ---
+    const wheel = $('#wheel'); const spinButton = $('#spin-button'); const resultDisplay = $('#result-display'); const wheelSpinSound = $('#wheel-spin-sound');
+    const prizes = [ /* ... pole výher s emoji ... */ { text: '🏷️ Sleva 15%', info: 'Použijte kód YUME15 při placení!' }, { text: '🚚 Doprava Zdarma', info: 'Automaticky aplikováno.' }, { text: '🎁 YUME Nálepka Pack', info: 'Přidáme zdarma k objednávce.' }, { text: '🏷️ Sleva 5%', info: 'Použijte kód YUME5!' }, { text: '😞 Nic (Zkus to zítra!)', info: '' }, { text: '🌟 Exkluzivní Přístup', info: 'Odešleme vám e-mail.' }, { text: '🎁 YUME Klíčenka', info: 'Přidáme zdarma k objednávce.' }, { text: '🏷️ Sleva 10%', info: 'Použijte kód YUME10!' }, { text: '✨ Malé Překvapení', info: 'Nechte se překvapit!' }, { text: '😞 Nic (Více štěstí příště!)', info: '' } ];
     const numberOfSegments = prizes.length; const segmentAngle = 360 / numberOfSegments; let isSpinning = false; let currentRotation = 0;
 
     if (spinButton && wheel && resultDisplay && numberOfSegments > 0) {
         spinButton.addEventListener('click', () => {
-            if (isSpinning) return;
-            isSpinning = true; spinButton.disabled = true;
+            if (isSpinning) return; isSpinning = true; spinButton.disabled = true;
             resultDisplay.innerHTML = 'Točí se...';
-
-            // Přehrát zvuk (pokud existuje a je načten)
-            if (wheelSpinSound && wheelSpinSound.readyState >= 2) { // readyState 2 = HAVE_METADATA (stačí pro play)
-                wheelSpinSound.pause();   // Zastavit, pokud hrál
-                wheelSpinSound.currentTime = 0; // Přetočit na začátek
-                wheelSpinSound.play().catch(error => console.error("Chyba přehrávání zvuku:", error)); // Přehrát + ošetření chyby
-            }
+            if (wheelSpinSound && wheelSpinSound.readyState >= 2) { wheelSpinSound.pause(); wheelSpinSound.currentTime = 0; wheelSpinSound.play().catch(e => console.error("Audio Error:", e)); }
 
             wheel.style.transition = 'none'; wheel.style.transform = `rotate(${currentRotation}deg)`; wheel.offsetHeight;
 
             const winningSegmentIndex = Math.floor(Math.random() * numberOfSegments);
-            const randomFullSpins = Math.floor(Math.random() * 4) + 5;
+            const randomFullSpins = Math.floor(Math.random() * 4) + 6; // 6 až 9 otáček
             const angleToCenter = (winningSegmentIndex * segmentAngle) + (segmentAngle / 2);
             const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.7;
             const targetAngleDelta = (360 * randomFullSpins) + angleToCenter + randomOffset;
             const finalRotation = currentRotation - targetAngleDelta;
 
-            wheel.style.transition = 'transform 6s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            wheel.style.transform = `rotate(${finalRotation}deg)`;
+            wheel.style.transition = 'transform 6s cubic-bezier(0.34, 1.56, 0.64, 1)'; wheel.style.transform = `rotate(${finalRotation}deg)`;
             currentRotation = finalRotation % 360;
 
             setTimeout(() => {
-                isSpinning = false; spinButton.disabled = false;
-                const actualPrize = prizes[winningSegmentIndex];
-                resultDisplay.innerHTML = actualPrize.text;
-                if (!actualPrize.text.toLowerCase().includes('nic')) {
-                    openPrizePopup(actualPrize); triggerConfetti();
-                }
+                isSpinning = false; spinButton.disabled = false; const actualPrize = prizes[winningSegmentIndex];
+                resultDisplay.innerHTML = actualPrize.text; // Zobrazit i pod kolem
+                if (!actualPrize.text.toLowerCase().includes('nic')) { openPrizePopup(actualPrize); triggerConfetti(); }
             }, 6100);
         });
     }
 
-    // --- Konfety (beze změny) ---
-    const confettiContainer = $('#confetti-container'); function triggerConfetti() { /* ... implementace konfet ... */ if (!confettiContainer) return; const confettiCount = 80; const colors = ['var(--primary-color)', 'var(--accent-color)', '#AAAAAA', '#CCCCCC']; confettiContainer.innerHTML = ''; for (let i = 0; i < confettiCount; i++) { const confetti = document.createElement('div'); confetti.classList.add('confetti'); if (Math.random() > 0.5) { confetti.classList.add('rectangle'); confetti.style.width = (Math.random() * 8 + 6) + 'px'; confetti.style.height = (Math.random() * 10 + 10) + 'px'; } else { confetti.classList.add('circle'); const size = (Math.random() * 6 + 8) + 'px'; confetti.style.width = size; confetti.style.height = size; } confetti.style.left = Math.random() * 100 + 'vw'; confetti.style.top = -Math.random() * 30 + 'vh'; confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]; confetti.style.opacity = Math.random() * 0.5 + 0.5; const duration = (Math.random() * 3 + 2.5) + 's'; const delay = Math.random() * 1.5 + 's'; const rotateEnd = (Math.random() * 720 - 360) + 'deg'; confetti.style.setProperty('--fall-duration', duration); confetti.style.setProperty('--fall-delay', delay); confetti.style.setProperty('--rotate-end', rotateEnd); confettiContainer.appendChild(confetti); setTimeout(() => { if (confetti.parentNode === confettiContainer) confettiContainer.removeChild(confetti); }, (parseFloat(duration) + parseFloat(delay)) * 1000 + 100); } }
+    // --- Konfety ---
+    const confettiContainer = $('#confetti-container'); function triggerConfetti() { /* ... kód ... */ if (!confettiContainer) return; const confettiCount = 80; const colors = ['var(--primary-color)', 'var(--accent-color)', '#AAAAAA', '#CCCCCC']; confettiContainer.innerHTML = ''; for (let i = 0; i < confettiCount; i++) { const confetti = document.createElement('div'); confetti.classList.add('confetti'); if (Math.random() > 0.5) { confetti.classList.add('rectangle'); confetti.style.width = (Math.random() * 8 + 6) + 'px'; confetti.style.height = (Math.random() * 10 + 10) + 'px'; } else { confetti.classList.add('circle'); const size = (Math.random() * 6 + 8) + 'px'; confetti.style.width = size; confetti.style.height = size; } confetti.style.left = Math.random() * 100 + 'vw'; confetti.style.top = -Math.random() * 30 + 'vh'; confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]; confetti.style.opacity = Math.random() * 0.5 + 0.5; const duration = (Math.random() * 3 + 2.5) + 's'; const delay = Math.random() * 1.5 + 's'; const rotateEnd = (Math.random() * 720 - 360) + 'deg'; confetti.style.setProperty('--fall-duration', duration); confetti.style.setProperty('--fall-delay', delay); confetti.style.setProperty('--rotate-end', rotateEnd); confettiContainer.appendChild(confetti); setTimeout(() => { if (confetti.parentNode === confettiContainer) confettiContainer.removeChild(confetti); }, (parseFloat(duration) + parseFloat(delay)) * 1000 + 100); } }
 
-    // --- Zpracování Formulářů (beze změny) ---
-    function handleFormSubmit(formId, message) { /* ... implementace ... */ const form = $(`#${formId}`); if (form) { form.addEventListener('submit', function(event) { event.preventDefault(); alert(message + '\n(Backend není implementován.)'); form.reset(); }); } }
+    // --- Zpracování Formulářů ---
+    function handleFormSubmit(formId, message) { /* ... kód ... */ const form = $(`#${formId}`); if (form) { form.addEventListener('submit', function(event) { event.preventDefault(); alert(message + '\n(Backend není implementován.)'); form.reset(); }); } }
     handleFormSubmit('contact-form', 'Děkujeme za Vaši zprávu!');
 
-    // --- Scroll Animace (beze změny) ---
+    // --- Scroll Animace ---
     const animatedElements = $$('.product-item, .timeline-event'); const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 }; const observerCallback = (entries, observer) => { entries.forEach(entry => { if (entry.isIntersecting) { if (entry.target.classList.contains('timeline-event')) { entry.target.classList.add('is-visible'); } else { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; } observer.unobserve(entry.target); } }); }; const intersectionObserver = new IntersectionObserver(observerCallback, observerOptions); animatedElements.forEach(el => { if (!el.classList.contains('timeline-event')) { el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity 0.6s 0.2s ease-out, transform 0.6s 0.2s ease-out'; } intersectionObserver.observe(el); });
 
-    // --- Zobrazení Data, Času a Fáze Měsíce (beze změny) ---
+    // --- Datum, Čas, Měsíc v Headeru ---
     const dateTimeDisplay = $('#date-time-display'); const moonPhaseDisplay = $('#moon-phase-display');
     function updateDateTime() { /* ... kód ... */ const now = new Date(); const optionsDate = { year: 'numeric', month: 'numeric', day: 'numeric' }; const optionsTime = { hour: '2-digit', minute: '2-digit' }; const formattedDate = now.toLocaleDateString('cs-CZ', optionsDate); const formattedTime = now.toLocaleTimeString('cs-CZ', optionsTime); if (dateTimeDisplay) { dateTimeDisplay.textContent = `${formattedDate}, ${formattedTime}`; } }
     function getMoonPhase(date = new Date()) { /* ... kód ... */ const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14, 0)); const daysSinceKnownNewMoon = (date.getTime() - knownNewMoon.getTime()) / 86400000; const synodicMonths = daysSinceKnownNewMoon / 29.53058867; const phase = (synodicMonths - Math.floor(synodicMonths)); let phaseEmoji = "❓"; if (phase < 0.03 || phase > 0.97) { phaseEmoji = "🌑"; } else if (phase < 0.22) { phaseEmoji = "🌒"; } else if (phase < 0.28) { phaseEmoji = "🌓"; } else if (phase < 0.47) { phaseEmoji = "🌔"; } else if (phase < 0.53) { phaseEmoji = "🌕"; } else if (phase < 0.72) { phaseEmoji = "🌖"; } else if (phase < 0.78) { phaseEmoji = "🌗"; } else { phaseEmoji = "🌘"; } return { emoji: phaseEmoji, value: phase }; }
@@ -121,37 +281,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Aktuální rok ve Footeru ---
     const yearSpan = $('#current-year'); if (yearSpan) { yearSpan.textContent = new Date().getFullYear(); }
 
-    // --- Placeholder pro logiku šachové hry ---
-    const claimRewardBtn = $('#claim-reward-btn'); function handleChessWin() { alert("Gratulujeme! Porazili jste YUME AI. Váš slevový kód je: YUMECHESS15"); if(claimRewardBtn) { claimRewardBtn.classList.remove('hidden'); claimRewardBtn.disabled = false; } }
+    // --- Placeholder pro Šachy ---
+    const claimRewardBtn = $('#claim-reward-btn'); function handleChessWin() { alert("Gratulujeme! Kód: YUMECHESS15"); if(claimRewardBtn) { claimRewardBtn.classList.remove('hidden'); claimRewardBtn.disabled = false; } }
 
     // --- Efekt Sněžení ---
-    function createSnowflakes() {
-        const snowContainer = $('#snow-container');
-        if (!snowContainer) return;
-        const numberOfFlakes = 50; // Počet vloček (upravte dle potřeby)
+    function createSnowflakes() { /* ... kód ... */ const snowContainer = $('#snow-container'); if (!snowContainer) return; const numberOfFlakes = 35; /* Snížen počet */ for (let i = 0; i < numberOfFlakes; i++) { const flake = document.createElement('div'); flake.classList.add('snowflake'); const size = Math.random() * 2.5 + 1; flake.style.width = `${size}px`; flake.style.height = `${size}px`; const startLeft = Math.random() * 100; const endLeftDelta = (Math.random() - 0.5) * 20; const duration = Math.random() * 12 + 15; /* Pomalejší */ const delay = Math.random() * 15; flake.style.left = `${startLeft}vw`; flake.style.setProperty('--left-ini', `${startLeft}vw`); flake.style.setProperty('--left-end', `${startLeft + endLeftDelta}vw`); flake.style.animationDuration = `${duration}s`; flake.style.animationDelay = `-${delay}s`; snowContainer.appendChild(flake); } } createSnowflakes();
 
-        for (let i = 0; i < numberOfFlakes; i++) {
-            const flake = document.createElement('div');
-            flake.classList.add('snowflake');
-
-            const size = Math.random() * 3 + 1; // Velikost 1px až 4px
-            flake.style.width = `${size}px`;
-            flake.style.height = `${size}px`;
-
-            const startLeft = Math.random() * 100; // Náhodná startovní X pozice
-            const endLeftDelta = (Math.random() - 0.5) * 20; // Náhodný posun doleva/doprava
-            const duration = Math.random() * 10 + 10; // Doba pádu 10s až 20s
-            const delay = Math.random() * 10; // Náhodné zpoždění startu
-
-            flake.style.left = `${startLeft}vw`; // Pozice se počítá zleva
-            flake.style.setProperty('--left-ini', `${startLeft}vw`);
-            flake.style.setProperty('--left-end', `${startLeft + endLeftDelta}vw`);
-            flake.style.animationDuration = `${duration}s`;
-            flake.style.animationDelay = `-${delay}s`; // Záporné zpoždění = začne v průběhu animace
-
-            snowContainer.appendChild(flake);
-        }
-    }
-    createSnowflakes(); // Spustit vytvoření vloček
+    // --- Inicializace po načtení ---
+    updateCartIcon(); // Zobrazit správný počet položek v košíku při startu
 
 }); // Konec DOMContentLoaded
