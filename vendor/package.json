@@ -1,36 +1,29 @@
 {
-  "name": "chess.js",
-  "version": "1.2.0",
-  "license": "BSD-2-Clause",
-  "main": "dist/cjs/chess.js",
-  "module": "dist/esm/chess.js",
-  "types": "dist/types/chess.d.ts",
-  "homepage": "https://github.com/jhlywa/chess.js",
-  "author": "Jeff Hlywa <jhlywa@gmail.com>",
-  "scripts": {
-    "prepare": "npm run build",
-    "build": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
-    "check": "npm run format:check && npm run lint && npm run test && npm run build",
-    "clean": "rm -rf ./dist",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "lint": "eslint src/ --ext .ts",
-    "test": "jest",
-    "test:coverage": "jest --coverage"
-  },
+  "author": "Chris Oakman <chris@oakmac.com> (http://chrisoakman.com/)",
+  "name": "@chrisoakman/chessboardjs",
+  "description": "JavaScript chessboard widget",
+  "homepage": "https://chessboardjs.com",
+  "license": "MIT",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jhlywa/chess.js"
+    "url": "git://github.com/oakmac/chessboardjs.git"
+  },
+  "files": ["dist/"],
+  "dependencies": {
+    "jquery": ">=3.4.1"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.1",
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
-    "@typescript-eslint/parser": "^5.17.0",
-    "eslint": "^8.12.0",
-    "jest": "^27.0.6",
-    "jest-extended": "^2.0.0",
-    "prettier": "^3.1.0",
-    "ts-jest": "^27.0.4",
-    "typescript": "^4.6.3"
+    "csso": "3.5.1",
+    "fs-plus": "3.1.1",
+    "kidif": "1.1.0",
+    "mustache": "2.3.0",
+    "standard": "10.0.2",
+    "uglify-js": "3.6.0"
+  },
+  "scripts": {
+    "build": "standard lib/chessboard.js && node scripts/build.js",
+    "standard": "standard --fix lib/*.js website/js/*.js",
+    "website": "node scripts/website.js"
   }
 }
