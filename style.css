@@ -2,7 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500&display=swap');
 
 /* --- Základní nastavení a Reset --- */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 /* --- Definice CSS Proměnných pro Témata (Černo/Bílo/Šedá) --- */
 :root {
@@ -58,23 +62,21 @@ body {
     color: var(--text-color);
     line-height: 1.7;
     transition: background-color 0.4s ease, color 0.4s ease;
-    /* scroll-behavior: smooth; - Může způsobovat problémy s JS přepínáním */
 }
 
 .container { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
-/* Užší kontejner pro textovější sekce */
-.narrow-container { max-width: 800px; }
+.narrow-container { max-width: 800px; margin: 0 auto; padding: 0 20px; /* Padding je zde důležitý */}
 
 h1, h2, h3 { font-family: var(--font-heading); margin-bottom: 1rem; color: var(--text-color); font-weight: 700; }
 h2 { font-size: 2.6rem; text-align: center; margin-bottom: 2.5rem; font-weight: 600; }
-h3 { font-size: 1.5rem; margin-bottom: 1.2rem; font-weight: 600; color: var(--primary-color); }
+h3 { font-size: 1.5rem; margin-bottom: 1.2rem; font-weight: 600; color: var(--primary-color); text-align: center; /* Centrovat podnadpisy jako h3 */ }
 p { margin-bottom: 1.3rem; }
-p.lead { font-size: 1.15rem; color: var(--primary-color); margin-bottom: 1.5rem; font-weight: 400; }
+p.lead { font-size: 1.15rem; color: var(--primary-color); margin-bottom: 1.5rem; font-weight: 400; text-align: center; } /* Centrovaný lead text */
 a { color: var(--primary-color); text-decoration: none; transition: color 0.3s ease; }
 a:hover { color: var(--accent-color); }
 img { max-width: 100%; height: auto; display: block; }
-ul { list-style: disc; margin-left: 25px; margin-bottom: 1.5rem; }
-li { margin-bottom: 0.5rem; }
+ul { list-style: disc; margin-left: 25px; margin-bottom: 1.5rem; padding-left: 5px; } /* Přidán malý padding */
+li { margin-bottom: 0.6rem; }
 button, input[type="submit"], .cta-button {
     cursor: pointer; padding: 12px 28px; border: 1px solid transparent; border-radius: 5px;
     background-color: var(--accent-color); color: var(--bg-color);
@@ -83,27 +85,25 @@ button, input[type="submit"], .cta-button {
     transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease, border-color 0.3s ease;
 }
 button:hover, input[type="submit"]:hover, .cta-button:hover {
-    background-color: transparent; /* Průhledné pozadí na hover */
-    color: var(--accent-color); /* Barva textu bude akcentní */
-    border: 1px solid var(--accent-color); /* Zvýraznit okraj */
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
     transform: translateY(-2px);
 }
-.small-text { font-size: 0.8rem; color: var(--primary-color); opacity: 0.8; }
+.small-text { font-size: 0.8rem; color: var(--primary-color); opacity: 0.8; text-align: center; margin-top: 1rem; }
 
 /* --- Struktura pro SPA --- */
 .section {
-    display: none; /* Všechny sekce jsou defaultně skryté */
+    display: none;
     padding: 80px 0;
-    min-height: calc(80vh - 80px); /* Minimální výška pro obsah */
-    opacity: 0; /* Počáteční stav pro animaci */
-    animation: fadeInSection 0.6s ease-out forwards; /* Animace zobrazení */
+    min-height: calc(80vh - 80px);
+    opacity: 0;
+    animation: fadeInSection 0.6s ease-out forwards;
 }
 .section.active-section {
-    display: block; /* Aktivní sekce je viditelná */
+    display: block;
 }
-
-/* Odsazení pro sekce, které nejsou hlavní (newsletter, kolo štěstí) */
-.ancillary-section {
+.ancillary-section { /* Použito pro skryté sekce jako Newsletter */
     background-color: var(--secondary-color);
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
@@ -116,14 +116,14 @@ button:hover, input[type="submit"]:hover, .cta-button:hover {
 
 /* --- Header --- */
 #header {
-    background-color: var(--bg-color); /* Header má stejné pozadí jako body */
+    background-color: var(--bg-color);
     padding: 15px 0; position: sticky; top: 0; z-index: 1000;
-    border-bottom: 1px solid var(--border-color); /* Linka oddělující header */
+    border-bottom: 1px solid var(--border-color);
     transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 #header .container { display: flex; justify-content: space-between; align-items: center; }
 #logo h1 { margin: 0; font-size: 2.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-#logo a { color: var(--text-color); display: flex; align-items: center; gap: 5px; } /* Barva loga jako text */
+#logo a { color: var(--text-color); display: flex; align-items: center; gap: 5px; }
 #logo a:hover { color: var(--primary-color); }
 
 #nav ul { display: flex; list-style: none; }
@@ -137,10 +137,10 @@ button:hover, input[type="submit"]:hover, .cta-button:hover {
     transform: translateX(-50%); background-color: var(--accent-color); transition: width 0.3s ease;
 }
 #nav a:hover::after,
-#nav a.active-nav::after { /* Aktivní linka má podtržení */
+#nav a.active-nav::after {
     width: 100%;
 }
-#nav a.active-nav { /* Zvýraznění aktivní linky */
+#nav a.active-nav {
     color: var(--accent-color);
     font-weight: 600;
 }
@@ -148,7 +148,7 @@ button:hover, input[type="submit"]:hover, .cta-button:hover {
 #theme-switcher button {
     background: none; border: 1px solid var(--border-color); border-radius: 50%;
     font-size: 1.3rem; padding: 8px; color: var(--text-color); margin-left: 20px;
-    cursor: pointer; width: 40px; height: 40px; line-height: 1; /* Zarovnání ikony */
+    cursor: pointer; width: 40px; height: 40px; line-height: 1;
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 #theme-switcher button:hover {
@@ -157,13 +157,10 @@ button:hover, input[type="submit"]:hover, .cta-button:hover {
      color: var(--primary-color);
 }
 
-
 /* --- Sekce Home --- */
-#home .cta-button {
-    display: inline-block; margin-top: 1.5rem;
-    /* Použít standardní styly tlačítek */
-}
-.playful-arrow { display: none; /* Skryjeme, není potřeba na SPA */}
+#home { text-align: center; } /* Centrovaný text pro hlavní Home sekci */
+#home .cta-button { display: inline-block; margin-top: 1.5rem; }
+.playful-arrow { display: none; }
 
 /* --- Slideshow --- */
 .slideshow { position: relative; max-width: 900px; margin: 3rem auto 3rem auto; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); }
@@ -171,45 +168,68 @@ button:hover, input[type="submit"]:hover, .cta-button:hover {
 .slide img { width: 100%; height: 450px; object-fit: cover; filter: brightness(0.9); }
 .slide.active { display: block; animation: fadeIn 1.5s ease-in-out; }
 @keyframes fadeIn { from { opacity: 0.6; } to { opacity: 1; } }
-.slide-caption { position: absolute; bottom: 25px; left: 25px; background-color: rgba(0, 0, 0, 0.7); color: #fff; padding: 10px 18px; border-radius: 5px; font-size: 1.1rem; font-family: var(--font-heading); font-weight: 600; }
+.slide-caption { position: absolute; bottom: 25px; left: 25px; background-color: rgba(0, 0, 0, 0.7); color: #fff; padding: 10px 18px; border-radius: 5px; font-size: 1.1rem; font-family: var(--font-heading); font-weight: 600; text-align: left; } /* Zarovnat text vlevo */
 .slide-prev, .slide-next { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(var(--accent-color-rgb), 0.3); color: var(--bg-color); border: none; padding: 15px; font-size: 1.8rem; cursor: pointer; z-index: 10; border-radius: 50%; width: 50px; height: 50px; line-height: 20px; transition: background-color 0.3s ease; }
 .slide-prev:hover, .slide-next:hover { background-color: rgba(var(--accent-color-rgb), 0.6); }
 .slide-prev { left: 20px; } .slide-next { right: 20px; }
 
 
 /* --- Sekce Kolekce --- */
+#kolekce .lead { text-align: center; } /* Centrovaný úvodní text */
 .product-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 35px; margin-top: 3rem; }
 .product-item { background-color: var(--secondary-color); padding: 0; border-radius: 8px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid var(--border-color); overflow: hidden; display: flex; flex-direction: column; }
 .product-item:hover { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(var(--accent-color-rgb), 0.08); }
-.product-item img { width: 100%; aspect-ratio: 4 / 5; /* Trochu vyšší poměr */ object-fit: cover; transition: transform 0.4s ease, filter 0.4s ease; filter: grayscale(20%) brightness(0.95); /* Decentní efekt */ }
+.product-item img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; transition: transform 0.4s ease, filter 0.4s ease; filter: grayscale(20%) brightness(0.95); }
 .product-item:hover img { transform: scale(1.03); filter: grayscale(0%) brightness(1); }
 .product-item h3 { color: var(--text-color); font-size: 1.2rem; margin-top: 1.2rem; }
-.product-item p { font-size: 0.9rem; padding: 0 20px; flex-grow: 1; color: var(--primary-color); }
+.product-item p { font-size: 0.9rem; padding: 0 20px; flex-grow: 1; color: var(--primary-color); text-align: center; } /* Centrovaný popis produktu */
 .price { font-weight: 600; color: var(--text-color); font-size: 1.1rem; margin: 0.5rem 0 1.5rem 0; display: block; }
 .playful-divider { border: none; height: 1px; background: var(--border-color); margin: 60px auto; width: 80px; }
 
 
 /* --- Sekce O nás --- */
-.about-image { max-width: 100%; /* Plná šířka v úzkém kontejneru */ border-radius: 8px; margin-bottom: 2.5rem; border: 1px solid var(--border-color); }
-.timeline { margin-top: 3rem; position: relative; padding: 20px 0; max-width: 700px; width: 100%; }
-.timeline h3 { text-align: center; margin-bottom: 2rem;}
+#onas .lead { text-align: left; } /* V sekci o nás necentrovat hlavní odstavec */
+#onas h3 { text-align: left; margin-top: 2rem; } /* Nadpis hodnot a milníků necentrovat */
+.about-image { max-width: 100%; border-radius: 8px; margin-bottom: 2.5rem; border: 1px solid var(--border-color); }
+.timeline { margin-top: 3rem; position: relative; padding: 20px 0; max-width: 700px; width: 100%; margin-left: auto; margin-right: auto; /* Centrovat timeline box */}
 .timeline::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background-color: var(--border-color); }
-.timeline-event { position: relative; margin-bottom: 30px; padding: 15px 25px; background-color: var(--secondary-color); border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 3px 8px rgba(var(--accent-color-rgb), 0.05); margin-left: 40px; /* Odsazení od linky */ opacity: 0; transition: opacity 0.5s ease-out, transform 0.5s ease-out; transform: translateX(-15px); }
+.timeline-event { position: relative; margin-bottom: 30px; padding: 15px 25px; background-color: var(--secondary-color); border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 3px 8px rgba(var(--accent-color-rgb), 0.05); margin-left: 40px; opacity: 0; transition: opacity 0.5s ease-out, transform 0.5s ease-out; transform: translateX(-15px); text-align: left; } /* Zarovnat text vlevo */
 .timeline-event.is-visible { opacity: 1; transform: translateX(0); }
-.timeline-event::before { /* Bod na lince */ content: ''; position: absolute; top: 18px; left: -29px; /* Pozice na lince */ width: 12px; height: 12px; background-color: var(--primary-color); border-radius: 50%; border: 3px solid var(--bg-color); z-index: 1; }
+.timeline-event::before { content: ''; position: absolute; top: 18px; left: -29px; width: 12px; height: 12px; background-color: var(--primary-color); border-radius: 50%; border: 3px solid var(--bg-color); z-index: 1; }
 .timeline-event .year { font-weight: 700; color: var(--accent-color); display: block; margin-bottom: 8px; font-size: 1rem; }
 
 
-/* --- Sekce Kolotoč Štěstí --- */
-.wheel-container { position: relative; width: 300px; height: 300px; margin: 3rem auto; }
-#wheel { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; transition: transform 6s cubic-bezier(0.3, 1, 0.4, 1); border: 6px solid var(--border-color); /* Tenčí okraj */ box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.1), inset 0 0 8px rgba(0,0,0,0.1); }
+/* --- Sekce Kolotoč Štěstí (jako podsekce Home) --- */
+.home-subsection {
+    margin-top: 60px;
+    padding: 50px 0; /* Větší padding */
+    background-color: var(--secondary-color);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-align: center;
+}
+.home-subsection h3 { /* Upravit h3 specificky zde */
+     font-size: 1.8rem; /* Větší nadpis pro kolo */
+     color: var(--text-color); /* Stejná barva jako hlavní text */
+     margin-bottom: 1rem;
+}
+.home-subsection p { /* Odstavce v sekci kola */
+    color: var(--primary-color);
+    max-width: 600px; /* Omezit šířku textu */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wheel-container { position: relative; width: 300px; height: 300px; margin: 2.5rem auto; /* Upravené odsazení */ }
+#wheel { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; transition: transform 6s cubic-bezier(0.3, 1, 0.4, 1); border: 6px solid var(--border-color); box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.1), inset 0 0 8px rgba(0,0,0,0.1); }
 #wheel img { width: 100%; height: 100%; object-fit: cover; }
 #wheel-pointer { position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(180deg); font-size: 2.5rem; color: var(--accent-color); z-index: 10; text-shadow: none; }
-#spin-button-container { margin-top: 1.5rem; }
+#spin-button-container { margin-top: 1rem; /* Menší odsazení tlačítka */ }
 #spin-button:disabled { background-color: var(--primary-color); border-color: var(--primary-color); color: var(--bg-color); opacity: 0.7; cursor: not-allowed; }
-#wheel-result { margin-top: 2rem; font-size: 1.2rem; font-weight: bold; min-height: 1.5em; color: var(--primary-color); }
+#wheel-result { margin-top: 1.5rem; /* Menší odsazení výsledku */ font-size: 1.2rem; font-weight: bold; min-height: 1.5em; color: var(--primary-color); }
 #result-display { color: var(--accent-color); font-weight: 700; display: block; margin-bottom: 0.5rem; }
-.prize-info-hidden { display: none; } /* Skrýt info o ceně defaultně */
+.prize-info-hidden { display: none; }
 #prize-info { font-size: 0.9rem; color: var(--primary-color); margin-top: 5px; }
 
 /* --- Konfety --- */
@@ -221,33 +241,36 @@ button:hover, input[type="submit"]:hover, .cta-button:hover {
 
 
 /* --- Sekce Newsletter & Kontakt --- */
-#newsletter, #kontakt { /* Společné styly */ }
-#newsletter .container, #kontakt .container { /* Použít narrow-container */ }
+#newsletter, #kontakt { /* Společné styly - žádné specifické kromě ancillary-section */ }
+#newsletter .container, #kontakt .container { /* Používá narrow-container */ }
+#newsletter .lead, #kontakt .lead { text-align: center; } /* Zde chceme centrovaný lead */
+#newsletter h2, #kontakt h2 { margin-bottom: 1.5rem; /* Menší mezera pod hlavním nadpisem */ }
+#newsletter p, #kontakt p:not(.lead):not(.small-text) { text-align: center; } /* Centrovaný i běžný text */
 
 form { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.3rem; }
 #newsletter-form { flex-direction: row; justify-content: center; align-items: center; gap: 1rem; }
 #newsletter-form input[type="email"] { flex-grow: 1; max-width: 400px; }
 #newsletter-form button { flex-shrink: 0; }
 
+#contact-form h3 { margin-bottom: 1.5rem; }
 input[type="text"], input[type="email"], textarea {
     padding: 14px; border: 1px solid var(--border-color); border-radius: 5px;
     font-family: var(--font-main); font-size: 0.95rem;
-    background-color: var(--secondary-color); /* Pozadí polí jiné než hlavní */
-    color: var(--text-color);
+    background-color: var(--secondary-color); color: var(--text-color);
     transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
     outline: none; border-color: var(--primary-color);
-    background-color: var(--bg-color); /* Změna pozadí při focusu */
+    background-color: var(--bg-color);
     box-shadow: 0 0 5px rgba(var(--primary-color-rgb), 0.2);
 }
 textarea { resize: vertical; min-height: 120px; }
-label { margin-bottom: 0.2rem; font-weight: 500; font-size: 0.85rem; display: block; }
+label { margin-bottom: 0.2rem; font-weight: 500; font-size: 0.85rem; display: block; text-align: left; } /* Zarovnat popisky vlevo */
 ::placeholder { color: var(--primary-color); opacity: 0.7; }
 
 .contact-info { margin-bottom: 2.5rem; text-align: center; line-height: 1.8; }
 .contact-info p { margin-bottom: 0.7rem; }
-.contact-playful-icon { display: none; /* Skryjeme, není relevantní */ }
+.contact-playful-icon { display: none; }
 
 
 /* --- Footer --- */
@@ -258,14 +281,18 @@ label { margin-bottom: 0.2rem; font-weight: 500; font-size: 0.85rem; display: bl
 .footer-links a { margin: 0 10px; color: var(--primary-color); font-size: 0.9rem; transition: color 0.3s ease; }
 .footer-links a:hover { color: var(--accent-color); }
 .social-links a { margin: 0 10px; display: inline-block; transition: transform 0.3s ease; }
-.social-links img { width: 24px; height: 24px; opacity: 0.7; transition: opacity 0.3s ease; filter: var(--bg-color == var(--bg-color-light) ? 'grayscale(100%) contrast(0%) brightness(100%)' : 'grayscale(100%) contrast(100%) brightness(200%)') /* Zjednodušení pro B/W */}
+.social-links img {
+    width: 24px; height: 24px; opacity: 0.7; transition: opacity 0.3s ease;
+    /* Jednoduché filtrování pro B/W - může vyžadovat úpravu podle ikon */
+    filter: var(--bg-color == var(--bg-color-light)) ? grayscale(80%) brightness(50%) contrast(100%) : grayscale(80%) brightness(150%) contrast(100%);
+}
 .social-links a:hover img { opacity: 1; }
 .social-links a:hover { transform: scale(1.1); }
 
 
 /* --- Responsivita --- */
 @media (max-width: 992px) {
-    .container { max-width: 960px; }
+    .container, .narrow-container { max-width: 960px; }
     h2 { font-size: 2.3rem; }
     .slide img { height: 400px; }
     .product-gallery { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
@@ -277,7 +304,7 @@ label { margin-bottom: 0.2rem; font-weight: 500; font-size: 0.85rem; display: bl
     .container, .narrow-container { padding: 0 15px; }
 
     #header .container { flex-wrap: wrap; justify-content: center; gap: 10px;}
-    #nav { order: 3; width: 100%; margin-top: 10px; } /* Navigace pod logo */
+    #nav { order: 3; width: 100%; margin-top: 10px; }
     #nav ul { justify-content: center; padding: 0; flex-wrap: wrap; gap: 5px 20px;}
     #nav li { margin-left: 0; }
     #theme-switcher { position: absolute; top: 20px; right: 15px; }
@@ -294,27 +321,34 @@ label { margin-bottom: 0.2rem; font-weight: 500; font-size: 0.85rem; display: bl
     #newsletter-form { flex-direction: column; align-items: stretch; }
     #newsletter-form input[type="email"] { max-width: none;}
 
-    .wheel-container { width: 260px; height: 260px; }
+    .home-subsection { margin-top: 40px; padding: 30px 0; }
+    .wheel-container { width: 260px; height: 260px; margin: 2rem auto; }
 }
 
 @media (max-width: 576px) {
     body { line-height: 1.6; }
     h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.3rem; } /* Menší h3 */
     .section { padding: 50px 0; }
 
-    #logo h1 { font-size: 1.8rem; text-align: center; width: 100%; }
+    #logo h1 { font-size: 1.8rem; text-align: center; width: 100%; margin-bottom: 0; } /* Menší mezera pod logem */
     #theme-switcher { top: 15px; right: 10px; }
     #theme-switcher button { width: 35px; height: 35px; font-size: 1.1rem; padding: 6px; }
     #nav ul { gap: 5px 15px;}
     #nav a { font-size: 0.8rem; padding-bottom: 5px; }
 
     .slide img { height: 280px; }
-    .slide-caption { display: none; } /* Skrýt popisky na malých obr. */
+    .slide-caption { display: none; }
 
-    .product-gallery { grid-template-columns: 1fr; gap: 30px; } /* Jeden produkt */
+    .product-gallery { grid-template-columns: 1fr; gap: 30px; }
 
+    .timeline-event { padding: 10px 15px; }
+    .timeline-event .year { font-size: 0.9rem; }
+
+    .home-subsection h3 { font-size: 1.5rem; }
     .wheel-container { width: 240px; height: 240px; }
     #wheel-pointer { font-size: 2.2rem; }
+    #wheel-result { font-size: 1.1rem; }
 
     form { gap: 1rem; }
     input[type="text"], input[type="email"], textarea, button, input[type="submit"], .cta-button { padding: 12px 18px; font-size: 0.85rem; }
