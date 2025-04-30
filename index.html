@@ -19,85 +19,80 @@
 
 <body class="light-mode">
 
-    <!-- Překrytí pro modální okna -->
+    <!-- Překrytí pro VÝHERNÍ modální okno -->
     <div id="modal-overlay" class="hidden"></div>
 
-    <!-- Modální okno pro Newsletter -->
-    <div id="newsletter-popup" class="modal hidden">
+    <!-- Modální okno pro VÝHRU Z KOLA -->
+    <div id="prize-popup" class="modal hidden prize-modal">
         <button class="close-modal-btn" title="Zavřít">×</button>
         <div class="modal-content">
-            <h2>☾ Staňte se YUME Insiderem!</h2>
-            <p>Získejte jako první info o novinkách, slevách a exkluzivních akcích. Zadejte svůj e-mail:</p>
-            <form id="popup-newsletter-form" action="#" method="post">
-                 <input type="email" name="popup_email" placeholder="Váš e-mail" required="required" />
-                 <button type="submit">Odebírat</button>
-            </form>
-            <p class="small-text">Odesláním souhlasíte se zpracováním údajů.</p>
+            <span class="prize-emoji-big">🎉</span>
+            <h2>Gratulujeme!</h2>
+            <p>Vytočili jste:</p>
+            <p id="prize-popup-text" class="prize-text-emphasis"></p>
+            <p id="prize-popup-info" class="prize-info-detail"></p>
+            <button class="close-modal-btn-bottom">Super!</button>
         </div>
     </div>
 
-    <!-- Modální okno pro Login/Register -->
-    <div id="login-register-popup" class="modal hidden">
-         <button class="close-modal-btn" title="Zavřít">×</button>
-         <div class="modal-content">
+     <!-- Menší okno pro Login/Register v rohu -->
+    <div id="login-register-popup" class="corner-popup hidden">
+         <button class="close-corner-popup-btn" title="Zavřít">×</button>
+         <div class="popup-content">
              <div class="login-register-tabs">
                  <button class="tab-btn active" data-tab="login">Přihlásit se</button>
                  <button class="tab-btn" data-tab="register">Registrovat se</button>
              </div>
-
-             <!-- Přihlašovací formulář -->
              <div id="login-tab" class="tab-content active">
-                 <h3>Přihlášení</h3>
+                 <!-- Login form -->
                  <form id="login-form" action="#" method="post">
-                     <div class="form-group">
-                         <label for="login-email">Email:</label>
-                         <input type="email" id="login-email" name="login_email" required="required" />
-                     </div>
-                     <div class="form-group">
-                         <label for="login-password">Heslo:</label>
-                         <input type="password" id="login-password" name="login_password" required="required" />
-                     </div>
-                     <button type="submit">Přihlásit</button>
-                     <p><a href="#" class="forgot-password-link">Zapomenuté heslo?</a></p>
+                     <div class="form-group-small"><label for="login-email">Email:</label><input type="email" id="login-email"/></div>
+                     <div class="form-group-small"><label for="login-password">Heslo:</label><input type="password" id="login-password"/></div>
+                     <button type="submit" class="small-btn">Přihlásit</button>
                  </form>
              </div>
-
-             <!-- Registrační formulář -->
              <div id="register-tab" class="tab-content">
-                  <h3>Nová Registrace</h3>
-                 <form id="register-form" action="#" method="post">
-                      <div class="form-group">
-                         <label for="register-name">Jméno:</label>
-                         <input type="text" id="register-name" name="register_name" required="required" />
-                     </div>
-                     <div class="form-group">
-                         <label for="register-email">Email:</label>
-                         <input type="email" id="register-email" name="register_email" required="required" />
-                     </div>
-                     <div class="form-group">
-                         <label for="register-password">Heslo:</label>
-                         <input type="password" id="register-password" name="register_password" required="required" />
-                     </div>
-                     <button type="submit">Vytvořit účet</button>
+                  <!-- Register form -->
+                  <form id="register-form" action="#" method="post">
+                      <div class="form-group-small"><label for="register-name">Jméno:</label><input type="text" id="register-name"/></div>
+                      <div class="form-group-small"><label for="register-email">Email:</label><input type="email" id="register-email"/></div>
+                      <div class="form-group-small"><label for="register-password">Heslo:</label><input type="password" id="register-password"/></div>
+                      <button type="submit" class="small-btn">Registrovat</button>
                  </form>
              </div>
-             <p class="small-text">Toto je pouze ukázka. Funkčnost vyžaduje backend.</p>
          </div>
+    </div>
+
+    <!-- Menší okno pro Newsletter v rohu -->
+    <div id="newsletter-popup" class="corner-popup hidden">
+        <button class="close-corner-popup-btn" title="Zavřít">×</button>
+        <div class="popup-content">
+            <h4>☾ YUME Insider</h4>
+            <p>Novinky a slevy přímo k vám?</p>
+            <form id="popup-newsletter-form" action="#" method="post">
+                 <input type="email" name="popup_email" placeholder="Váš e-mail" required="required" />
+                 <button type="submit" class="small-btn">Ok</button>
+            </form>
+        </div>
     </div>
 
 
     <!-- ========= HEADER ========= -->
     <div id="header">
-        <div class="container">
+        <div class="container header-container"> <!-- Přidána třída pro snazší stylování -->
             <div id="logo">
                 <h1><a href="#home" class="nav-link">☾ YUME</a></h1>
             </div>
+            <!-- Info o čase a měsíci PŘESUNUTO SEM -->
+             <div class="time-moon-info header-info">
+                 <span id="date-time-display"></span> | <span id="moon-phase-display" title="Fáze měsíce">...</span>
+             </div>
             <div id="nav">
                 <ul>
                     <li><a href="#home" class="nav-link active-nav">Home</a></li>
                     <li><a href="#kolekce" class="nav-link">Kolekce</a></li>
                     <li><a href="#onas" class="nav-link">O nás</a></li>
-                    <li><a href="#hrat" class="nav-link">Hrej s YUME</a></li> <!-- Nová sekce -->
+                    <li><a href="#hrat" class="nav-link">Hrej s YUME</a></li>
                     <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
                 </ul>
             </div>
@@ -120,28 +115,25 @@
             <div class="container">
                 <div class="graphic-element moon-icon-large">☾</div>
                 <h2>Vítejte ve Světě YUME</h2>
-                <p class="lead">Jsme YUME (夢) - sen. Tvoříme streetwear, který není jen oblečením, ale vyjádřením vašeho vnitřního světa, vaší cesty a vašich aspirací. Věříme, že každý den je příležitostí snít a tvořit.</p>
+                <p class="lead">Jsme YUME (夢) - sen. Tvoříme streetwear, který není jen oblečením, ale vyjádřením vašeho vnitřního světa, vaší cesty a vašich aspirací.</p>
 
                 <!-- Slideshow -->
                 <div class="slideshow">
-                    <!-- ... obsah slideshow ... -->
-                    <div class="slide active"> <img src="images/placeholder-slideshow-1.jpg" alt="YUME Streetwear model v šedé mikině" /><div class="slide-caption">Kolekce inspirovaná nocí</div></div>
-                    <div class="slide"> <img src="images/placeholder-slideshow-2.jpg" alt="Detail černé YUME bundy" /><div class="slide-caption">Kvalita v každém detailu</div></div>
-                    <div class="slide"> <img src="images/placeholder-slideshow-3.jpg" alt="Městská silueta s motivem YUME" /><div class="slide-caption">Váš styl, váš sen</div></div>
-                    <button class="slide-prev"><</button> <button class="slide-next">></button>
+                     <div class="slide active"> <img src="images/placeholder-slideshow-1.jpg" alt="YUME Streetwear model v šedé mikině" /><div class="slide-caption">Kolekce inspirovaná nocí</div></div>
+                     <div class="slide"> <img src="images/placeholder-slideshow-2.jpg" alt="Detail černé YUME bundy" /><div class="slide-caption">Kvalita v každém detailu</div></div>
+                     <div class="slide"> <img src="images/placeholder-slideshow-3.jpg" alt="Městská silueta s motivem YUME" /><div class="slide-caption">Váš styl, váš sen</div></div>
+                     <button class="slide-prev"><</button> <button class="slide-next">></button>
                 </div>
 
-                <p>Prozkoumejte naši nejnovější kolekci a najděte kousky, které rezonují s vaším jedinečným stylem. Staňte se součástí komunity YUME.</p>
+                <p>Prozkoumejte naši nejnovější kolekci a najděte kousky, které rezonují s vaším jedinečným stylem.</p>
                 <a href="#kolekce" class="cta-button nav-link">Objevit Kolekci</a>
-
-                 <hr class="playful-divider star-divider" /> <!-- Jiný styl oddělovače -->
+                 <hr class="playful-divider star-divider" />
 
                  <!-- Sekce KOLOTOČ ŠTĚSTÍ -->
                 <div id="kolotoc-stesti" class="home-subsection">
                     <div class="container narrow-container">
                         <h3><span class="spin-icon">💫</span> Zatočte si o YUME Odměnu!</h3>
                         <p>Jako poděkování naší komunitě zkuste své štěstí a vyhrajte exkluzivní slevu, dopravu zdarma nebo jiný malý dárek od YUME!</p>
-
                         <div class="wheel-container">
                              <div id="wheel">
                                 <img src="images/placeholder-wheel.png" alt="Kolotoč štěstí YUME" />
@@ -152,28 +144,26 @@
                              </div>
                         </div>
                         <div id="wheel-result">
-                            <p>Vaše výhra: <span id="result-display">-</span></p>
-                            <p id="prize-info" class="prize-info-hidden"></p>
+                            <p>Výsledek točení: <span id="result-display">-</span></p>
+                             <!-- Info o výhře zde už nezobrazujeme, použijeme pop-up -->
                         </div>
                     </div>
-                     <div id="confetti-container"></div>
+                     <div id="confetti-container"></div> <!-- Konfety zustavaji -->
                 </div>
             </div>
         </div>
 
         <!-- === Sekce KOLEKCE === -->
         <div id="kolekce" class="section">
-            <div class="container">
+             <div class="container">
                 <div class="graphic-element abstract-lines"></div>
                 <h2>Naše Kolekce</h2>
-                <p class="lead">Ponořte se do aktuální nabídky YUME. Každý kus je navržen s důrazem na detail, pohodlí a osobitost. Používáme prémiové materiály a moderní střihy.</p>
-                <p>Tato sezóna se nese v duchu městských kontrastů – hra světla a stínu, minimalistické linie doplněné nečekanými detaily.</p>
+                <p class="lead">Ponořte se do aktuální nabídky YUME. Každý kus je navržen s důrazem na detail, pohodlí a osobitost.</p>
                 <div class="product-gallery">
-                    <!-- ... obsah galerie ... -->
-                    <div class="product-item"> <img src="images/placeholder-hoodie-grey.jpg" alt="YUME Mikina 'Lunar' - Šedá" /> <h3>Mikina 'Lunar'</h3> <p>Ultra měkká mikina s kapucí v melírované šedé...</p> <span class="price">1590 Kč</span> </div>
-                    <div class="product-item"> <img src="images/placeholder-tshirt-black.jpg" alt="YUME Tričko 'Void' - Černé" /> <h3>Tričko 'Void'</h3> <p>Prémiové bavlněné tričko v sytě černé barvě...</p> <span class="price">850 Kč</span> </div>
-                    <div class="product-item"> <img src="images/placeholder-cap-black.jpg" alt="YUME Kšiltovka 'Eclipse' - Černá" /> <h3>Kšiltovka 'Eclipse'</h3> <p>Klasická černá kšiltovka s nastavitelným páskem...</p> <span class="price">650 Kč</span> </div>
-                    <div class="product-item"> <img src="images/placeholder-jacket-black.jpg" alt="YUME Bunda 'Shadow' - Černá" /> <h3>Bunda 'Shadow'</h3> <p>Lehká větrovka z voděodolného materiálu...</p> <span class="price">2490 Kč</span> </div>
+                    <div class="product-item"> <img src="images/placeholder-hoodie-grey.jpg" alt="YUME Mikina 'Lunar' - Šedá" /> <h3>Mikina 'Lunar'</h3> <p>Ultra měkká mikina...</p> <span class="price">1590 Kč</span> </div>
+                    <div class="product-item"> <img src="images/placeholder-tshirt-black.jpg" alt="YUME Tričko 'Void' - Černé" /> <h3>Tričko 'Void'</h3> <p>Prémiové bavlněné tričko...</p> <span class="price">850 Kč</span> </div>
+                    <div class="product-item"> <img src="images/placeholder-cap-black.jpg" alt="YUME Kšiltovka 'Eclipse' - Černá" /> <h3>Kšiltovka 'Eclipse'</h3> <p>Klasická černá kšiltovka...</p> <span class="price">650 Kč</span> </div>
+                    <div class="product-item"> <img src="images/placeholder-jacket-black.jpg" alt="YUME Bunda 'Shadow' - Černá" /> <h3>Bunda 'Shadow'</h3> <p>Lehká větrovka...</p> <span class="price">2490 Kč</span> </div>
                 </div>
                  <hr class="playful-divider" />
                  <p>Sledujte nás nebo se <a href="#newsletter" class="nav-link">přihlaste k newsletteru</a> pro info o novinkách!</p>
@@ -184,43 +174,26 @@
         <div id="onas" class="section">
              <div class="container narrow-container">
                 <h2>Příběh YUME ☾</h2>
-                <img src="images/placeholder-about.jpg" alt="Inspirace YUME - skica, náladová fotografie" class="about-image" />
-                <p class="lead">YUME není jen značka, je to filozofie. Zrodila se v roce 2022 z touhy propojit svět streetwearu s hlubším významem – s odvahou snít a následovat vlastní cestu.</p>
-                <h3>Naše Hodnoty:</h3>
-                <ul>
-                    <li><strong>Kvalita:</strong> Pečlivě vybíráme materiály a dbáme na precizní zpracování.</li>
-                    <li><strong>Design:</strong> Hledáme rovnováhu mezi trendy a nadčasovou estetikou.</li>
-                    <li><strong>Komunita:</strong> YUME je pro všechny, kteří se nebojí být sami sebou.</li>
-                    <li><strong>Udržitelnost:</strong> Postupně integrujeme udržitelnější postupy.</li>
-                </ul>
-                 <p>Jsme malý tým s velkými sny. Děkujeme, že jste součástí našeho příběhu.</p>
-                <div class="timeline">
-                     <h3>Naše Milníky:</h3>
-                     <!-- ... obsah timeline ... -->
-                    <div class="timeline-event"> <span class="year">2022</span> Jiskra Nápadu & První Skici </div>
-                    <div class="timeline-event"> <span class="year">2023</span> Vývoj Prototypů & Výběr Materiálů </div>
-                    <div class="timeline-event"> <span class="year">2024</span> Spuštění E-shopu & První Kolekce </div>
-                    <div class="timeline-event"> <span class="year">Budoucnost</span> Nové Kolekce & Růst Komunity... </div>
-                </div>
+                <img src="images/placeholder-about.jpg" alt="Inspirace YUME" class="about-image" />
+                <p class="lead">YUME není jen značka, je to filozofie. Zrodila se z touhy propojit svět streetwearu s hlubším významem.</p>
+                <h3>Naše Hodnoty:</h3> <ul><li><strong>Kvalita</strong></li><li><strong>Design</strong></li><li><strong>Komunita</strong></li><li><strong>Udržitelnost</strong></li></ul>
+                <p>Jsme malý tým s velkými sny. Děkujeme, že jste součástí.</p>
+                <div class="timeline"> <h3>Naše Milníky:</h3> <div class="timeline-event"> <span class="year">2022</span> Nápad </div> <div class="timeline-event"> <span class="year">2023</span> Prototypy </div> <div class="timeline-event"> <span class="year">2024</span> Start! </div> <div class="timeline-event"> <span class="year">Budoucnost</span> ... </div> </div>
             </div>
         </div>
 
          <!-- === Sekce HREJ S YUME === -->
         <div id="hrat" class="section">
-            <div class="container chess-container"> <!-- Speciální kontejner -->
+            <div class="container chess-container">
                  <div class="graphic-element chess-icon">♟️</div>
                  <h2>Hrej s YUME: Šachy</h2>
-                 <p class="lead">Dejte si pauzu a vyzvěte naši YUME AI na partii šachů! Ukažte své strategické myšlení.</p>
-                 <p>Pokud porazíte našeho bota na střední nebo těžkou obtížnost (zatím imaginární funkce!), můžete získat speciální slevový kód na další nákup!</p>
-
+                 <p class="lead">Dejte si pauzu a vyzvěte naši YUME AI na partii šachů!</p>
+                 <p>Pokud porazíte bota (zatím imaginární funkce!), můžete získat speciální slevu!</p>
                  <div id="chess-game-placeholder">
-                     <h3>Šachovnice se načítá...</h3>
-                     <div class="loading-spinner"></div>
-                     <p><em>(Zde by byla integrována šachová hra pomocí JavaScriptové knihovny jako <a href="https://github.com/jhlywa/chess.js" target="_blank" rel="noopener">chess.js</a> (logika) a <a href="https://github.com/oakmac/chessboardjs/" target="_blank" rel="noopener">chessboard.js</a> nebo <a href="https://github.com/shaack/cm-chessboard" target="_blank" rel="noopener">cm-chessboard</a> (UI) + šachový engine jako <a href="https://github.com/nmrugg/stockfish.js" target="_blank" rel="noopener">Stockfish.js</a> pro AI.)</em></p>
-                     <p><em>Po skončení hry by skript vyhodnotil výsledek a případně zobrazil tlačítko/kód pro slevu.</em></p>
-                     <button id="claim-reward-btn" class="hidden" disabled="disabled">Získat odměnu za výhru!</button> <!-- Skryté tlačítko -->
+                     <h3>Šachovnice se načítá...</h3> <div class="loading-spinner"></div>
+                     <p><em>(Integrace šachové hry vyžaduje externí JS knihovny.)</em></p>
+                     <button id="claim-reward-btn" class="hidden" disabled="disabled">Získat odměnu!</button>
                  </div>
-
             </div>
         </div>
 
@@ -229,45 +202,24 @@
             <div class="container narrow-container">
                 <h2>Spojte se s Námi</h2>
                 <p class="lead">Máte otázku, nápad nebo nám chcete jen něco vzkázat? Jsme tu pro vás.</p>
-
                 <div class="contact-wrapper">
-                    <!-- Kontaktní Informace -->
                     <div class="contact-details">
                          <h3>Kontaktní Údaje</h3>
-                         <p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18px" height="18px" style="vertical-align: middle; margin-right: 8px;"><path d="M0 0h24v24H0z" fill="none"/><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
-                         <strong>Email:</strong> <a href="mailto:info@yume-streetwear.placeholder">info@yume-streetwear.placeholder</a></p>
-                         <p style="margin-top: 15px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18px" height="18px" style="vertical-align: middle; margin-right: 8px;"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6h2v-6zm0 8h-2v-2h2v2z"/></svg>
-                         Odpovídáme obvykle do 24h (Po-Pá).</p>
-                         <p style="margin-top: 15px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18px" height="18px" style="vertical-align: middle; margin-right: 8px;"><path d="M0 0h24v24H0z" fill="none"/><path d="M17.66 17.66C16.13 19.19 14.12 20 12 20s-4.13-.81-5.66-2.34C4.81 16.13 4 14.12 4 12s.81-4.13 2.34-5.66C7.87 4.81 9.88 4 12 4c.46 0 .92.05 1.36.15l-1.6 1.6C11.37 5.53 11 6.23 11 7v2.28l-2.47 2.47C8.13 11.35 8 10.7 8 10c0-2.21 1.79-4 4-4 .7 0 1.35.13 1.95.37L16.43 3.9A9.932 9.932 0 0012 2C6.48 2 2 6.48 2 12s4.48 10 10 10c2.61 0 4.98-1 6.77-2.64l-1.11-1.7zM20 12c0 .7-.13 1.35-.37 1.95L22.1 16.43A9.932 9.932 0 0022 12c0-5.52-4.48-10-10-10-.94 0-1.84.13-2.69.36l1.71 2.66c.44-.1.9-.15 1.36-.15 4.08 0 7.45 3.16 7.94 7.14l2.02.92c.04-.3.04-.61.04-.92z"/></svg>
-                         Sledujte nás na sociálních sítích (odkazy níže).</p>
+                         <p><svg ...></svg> <strong>Email:</strong> <a href="mailto:info@yume-streetwear.placeholder">info@yume-streetwear.placeholder</a></p>
+                         <p><svg ...></svg> Odpovídáme obvykle do 24h (Po-Pá).</p>
+                         <p><svg ...></svg> Sledujte nás na sociálních sítích.</p>
                     </div>
-
-                    <!-- Kontaktní Formulář -->
                     <div class="contact-form-container">
                         <h3>Napište nám</h3>
                         <form id="contact-form" action="#" method="post">
-                            <div class="form-group">
-                                <label for="name">Vaše Jméno:</label>
-                                <input type="text" id="name" name="name" required="required" placeholder="Jak vás máme oslovit?"/>
-                            </div>
-                             <div class="form-group">
-                                <label for="email_contact">Váš Email:</label>
-                                <input type="email" id="email_contact" name="email" required="required" placeholder="Abychom vám mohli odpovědět"/>
-                            </div>
-                             <div class="form-group">
-                                <label for="subject">Předmět:</label>
-                                <input type="text" id="subject" name="subject" placeholder="Např. Dotaz k produktu"/>
-                            </div>
-                             <div class="form-group">
-                                <label for="message">Vaše Zpráva:</label>
-                                <textarea id="message" name="message" rows="5" required="required" placeholder="Sem napište vaši zprávu..."></textarea>
-                            </div>
-                            <div>
-                                <button type="submit">Odeslat Zprávu</button>
-                            </div>
+                            <div class="form-group"><label for="name">Jméno:</label><input type="text" id="name" required placeholder="Jak vás máme oslovit?"/></div>
+                            <div class="form-group"><label for="email_contact">Email:</label><input type="email" id="email_contact" required placeholder="Abychom vám mohli odpovědět"/></div>
+                            <div class="form-group"><label for="subject">Předmět:</label><input type="text" id="subject" placeholder="Např. Dotaz k produktu"/></div>
+                            <div class="form-group"><label for="message">Zpráva:</label><textarea id="message" rows="5" required placeholder="Sem napište vaši zprávu..."></textarea></div>
+                            <div><button type="submit">Odeslat Zprávu</button></div>
                         </form>
                     </div>
-                </div> <!-- Konec .contact-wrapper -->
+                </div>
             </div>
         </div>
 
@@ -275,12 +227,12 @@
         <div id="newsletter" class="section ancillary-section">
              <div class="container narrow-container">
                  <h2>Staňte se YUME Insiderem</h2>
-                 <p>Chcete být první, kdo se dozví o nových kolekcích, exkluzivních slevách a speciálních akcích? Přihlaste se k odběru našeho newsletteru!</p>
+                 <p>Chcete být první, kdo se dozví o novinkách? Přihlaste se k odběru!</p>
                  <form id="newsletter-form" action="#" method="post">
                      <input type="email" name="email" placeholder="Zadejte váš e-mail" required="required" />
                      <button type="submit">Chci Odebírat</button>
                  </form>
-                 <p class="small-text">Odesláním formuláře souhlasíte se zpracováním osobních údajů.</p>
+                 <p class="small-text">Souhlasíte se zpracováním údajů.</p>
              </div>
         </div>
 
@@ -289,17 +241,11 @@
     <!-- ========= FOOTER ========= -->
     <div id="footer">
         <div class="container">
-            <div class="footer-top-row">
-                 <!-- Odkazy na vedlejší sekce -->
-                 <div class="footer-links">
-                    <a href="#newsletter" class="nav-link">Newsletter</a> |
-                    <a href="#">Obchodní Podmínky</a> |
-                    <a href="#">Ochrana Osobních Údajů</a>
-                </div>
-                 <!-- Info o čase a měsíci -->
-                 <div class="time-moon-info">
-                     <span id="date-time-display"></span> | Fáze měsíce: <span id="moon-phase-display">...</span>
-                 </div>
+            <!-- Info o čase PŘESUNUTO do headeru -->
+            <div class="footer-links">
+                <a href="#newsletter" class="nav-link">Newsletter</a> |
+                <a href="#">Obchodní Podmínky</a> |
+                <a href="#">Ochrana Osobních Údajů</a>
             </div>
             <hr class="footer-divider"/>
             <p>© <span id="current-year">2024</span> YUME Streetwear. Všechna práva vyhrazena.</p>
@@ -311,13 +257,9 @@
         </div>
     </div>
 
-    <!-- JavaScript na konci -->
+    <!-- JavaScript a knihovny -->
     <script type="text/javascript" src="script.js"></script>
-    <!-- !! ZDE BY SE NAČETLY KNIHOVNY PRO ŠACHY, POKUD BY BYLY POUŽITY !! -->
-    <!-- <script src="path/to/chess.js"></script> -->
-    <!-- <script src="path/to/chessboard.js"></script> -->
-    <!-- <script src="path/to/stockfish.js"></script> -->
-    <!-- <script src="my-chess-logic.js"></script> -->
+    <!-- Šachové knihovny by šly sem -->
 
 </body>
 </html>
