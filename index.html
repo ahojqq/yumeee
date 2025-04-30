@@ -13,8 +13,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet" />
     <!-- Odkaz na externí CSS soubor -->
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <!-- Placeholder pro Favicon - nahraďte vlastním -->
-    <!-- <link rel="icon" href="images/favicon.ico" type="image/x-icon" /> -->
+    <!-- Placeholder pro Favicon -->
+    <!-- <link rel="icon" href="images/favicon.png" type="image/png" /> -->
 </head>
 
 <body class="light-mode"> <!-- Výchozí světlý mód -->
@@ -23,214 +23,234 @@
     <div id="header">
         <div class="container">
             <div id="logo">
-                <!-- Používáme jednoduché textové logo -->
-                <h1><a href="#home">YUME</a></h1>
+                <!-- Textové logo s měsíčním prvkem -->
+                <h1><a href="#home" class="nav-link">☾ YUME</a></h1>
             </div>
             <div id="nav">
                 <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#kolekce">Kolekce</a></li>
-                    <li><a href="#onas">O nás</a></li>
-                    <li><a href="#kontakt">Kontakt</a></li>
+                     <!-- Používáme třídu nav-link pro JS a href pro identifikaci cíle -->
+                    <li><a href="#home" class="nav-link active-nav">Home</a></li>
+                    <li><a href="#kolekce" class="nav-link">Kolekce</a></li>
+                    <li><a href="#onas" class="nav-link">O nás</a></li>
+                    <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
                 </ul>
             </div>
             <div id="theme-switcher">
-                <button id="theme-toggle-button" title="Přepnout světlý/tmavý režim">🌙</button>
+                <button id="theme-toggle-button" title="Přepnout světlý/tmavý režim">☀️</button> <!-- Ikona se mění JS -->
             </div>
         </div>
     </div>
 
-    <!-- ========= HLAVNÍ OBSAH ========= -->
+    <!-- ========= HLAVNÍ OBSAH (KONTEJNER PRO SEKCÍ) ========= -->
     <div id="main-content">
 
-        <!-- === Sekce HOME === -->
-        <div id="home" class="section">
-            <div class="container">
-                <h2>Vítejte ve světě YUME</h2>
-                <p>Objevte streetwear, který má duši. YUME (夢) znamená v japonštině sen. Naše oblečení je pro snílky, tvůrce a ty, kteří se nebojí jít vlastní cestou.</p>
+        <!-- === Sekce HOME (Výchozí) === -->
+        <div id="home" class="section active-section"> <!-- Tato sekce je viditelná na začátku -->
+            <div class="container narrow-container">
+                <h2>Vítejte ve Světě YUME</h2>
+                <p class="lead">Jsme YUME (夢) - sen. Tvoříme streetwear, který není jen oblečením, ale vyjádřením vašeho vnitřního světa, vaší cesty a vašich aspirací. Věříme, že každý den je příležitostí snít a tvořit.</p>
+                <p>Naše designy čerpají inspiraci z kontrastů městského života, klidu noční oblohy a nekonečných možností, které před námi leží. Kombinujeme minimalistickou estetiku s výraznými prvky, kvalitní materiály s pohodlným střihem.</p>
 
-                <!-- Slideshow - Aktualizované obrázky z Unsplash -->
+                <!-- Slideshow -->
                 <div class="slideshow">
                     <div class="slide active">
-                        <img src="https://images.unsplash.com/photo-1584489669679-ac366e116991?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="YUME Streetwear Model v béžové bundě v městském prostředí" />
-                        <div class="slide-caption">Nová Kolekce: Urban Dream</div>
+                        <!-- !! NAHRAĎTE VLASTNÍM OBRÁZKEM !! -->
+                        <img src="images/placeholder-slideshow-1.jpg" alt="YUME Streetwear model v šedé mikině" />
+                        <div class="slide-caption">Kolekce inspirovaná nocí</div>
                     </div>
                     <div class="slide">
-                        <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1915&q=80" alt="Detail černé minimalistické mikiny YUME" />
-                         <div class="slide-caption">Detaily, které definují styl</div>
+                        <!-- !! NAHRAĎTE VLASTNÍM OBRÁZKEM !! -->
+                        <img src="images/placeholder-slideshow-2.jpg" alt="Detail černé YUME bundy" />
+                        <div class="slide-caption">Kvalita v každém detailu</div>
                     </div>
                     <div class="slide">
-                         <img src="https://images.unsplash.com/photo-1529339938550-9cd815f36a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Streetwear lifestyle - skupina lidí ve městě" />
-                         <div class="slide-caption">Žijte svůj YUME naplno</div>
+                        <!-- !! NAHRAĎTE VLASTNÍM OBRÁZKEM !! -->
+                        <img src="images/placeholder-slideshow-3.jpg" alt="Městská silueta s motivem YUME" />
+                        <div class="slide-caption">Váš styl, váš sen</div>
                     </div>
-                    <!-- Ovládací prvky slideshow (vyžadují JS) -->
                     <button class="slide-prev"><</button>
                     <button class="slide-next">></button>
                 </div>
 
-                <p>Připravili jsme pro vás unikátní kousky plné energie a stylu.</p>
-                <a href="#kolekce" class="cta-button">Prohlédnout kolekci</a>
-
-                <!-- Hravý prvek: Animovaná šipka dolů -->
-                <div class="playful-arrow bounce">↓</div>
+                <p>Prozkoumejte naši nejnovější kolekci a najděte kousky, které rezonují s vaším jedinečným stylem. Staňte se součástí komunity YUME.</p>
+                <a href="#kolekce" class="cta-button nav-link">Objevit Kolekci</a>
             </div>
         </div>
 
         <!-- === Sekce KOLEKCE === -->
         <div id="kolekce" class="section">
             <div class="container">
-                <h2>Naše Aktuální Kolekce</h2>
-                <p>Inspirováno ulicí, sněním a nekonečnými možnostmi. Každý kus vypráví příběh.</p>
+                <h2>Naše Kolekce</h2>
+                <p class="lead">Ponořte se do aktuální nabídky YUME. Každý kus je navržen s důrazem na detail, pohodlí a osobitost. Používáme prémiové materiály a moderní střihy, které obstojí ve zkoušce času i trendů.</p>
+                <p>Tato sezóna se nese v duchu městských kontrastů – hra světla a stínu, minimalistické linie doplněné nečekanými detaily. Najdete zde klíčové kousky pro váš šatník, od pohodlných mikin a triček až po funkční bundy a doplňky.</p>
 
-                <!-- Galerie produktů - Aktualizované obrázky z Unsplash -->
+                <!-- Galerie produktů -->
                 <div class="product-gallery">
                     <div class="product-item">
-                        <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1972&q=80" alt="YUME Mikina 'Sen' - Šedá" />
-                        <h3>Mikina 'Sen'</h3>
-                        <p>Pohodlná šedá mikina s minimalistickým designem.</p>
-                        <span class="price">1490 Kč</span>
+                        <!-- !! NAHRAĎTE VLASTNÍM OBRÁZKEM !! -->
+                        <img src="images/placeholder-hoodie-grey.jpg" alt="YUME Mikina 'Lunar' - Šedá" />
+                        <h3>Mikina 'Lunar'</h3>
+                        <p>Ultra měkká mikina s kapucí v melírované šedé. Decentní logo na hrudi. Ideální pro chladnější večery.</p>
+                        <span class="price">1590 Kč</span>
                     </div>
                     <div class="product-item">
-                        <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="YUME Tričko 'Vize' - Černé" />
-                        <h3>Tričko 'Vize'</h3>
-                        <p>Základní černé tričko pro každý den.</p>
-                        <span class="price">790 Kč</span>
+                         <!-- !! NAHRAĎTE VLASTNÍM OBRÁZKEM !! -->
+                        <img src="images/placeholder-tshirt-black.jpg" alt="YUME Tričko 'Void' - Černé" />
+                        <h3>Tričko 'Void'</h3>
+                        <p>Prémiové bavlněné tričko v sytě černé barvě. Lehce prodloužený střih a zesílený límec. Základ, který vydrží.</p>
+                        <span class="price">850 Kč</span>
                     </div>
                     <div class="product-item">
-                        <img src="https://images.unsplash.com/photo-1534215745977-99a79338f21a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="YUME Kšiltovka 'Noc' - Černá" />
-                        <h3>Kšiltovka 'Noc'</h3>
-                        <p>Černá kšiltovka pro doladění outfitu.</p>
-                        <span class="price">590 Kč</span>
+                        <!-- !! NAHRAĎTE VLASTNÍM OBRÁZKEM !! -->
+                        <img src="images/placeholder-cap-black.jpg" alt="YUME Kšiltovka 'Eclipse' - Černá" />
+                        <h3>Kšiltovka 'Eclipse'</h3>
+                        <p>Klasická černá kšiltovka s nastavitelným páskem. Vyšívané logo YUME. Ochrání před sluncem i doplní outfit.</p>
+                        <span class="price">650 Kč</span>
                     </div>
-                     <!-- Přidejte další produkty dle potřeby sem -->
-                     <!-- Příklad dalšího produktu:
                      <div class="product-item">
-                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="YUME Bunda 'Stín' - Černá" />
-                        <h3>Bunda 'Stín'</h3>
-                        <p>Lehká černá bunda do města.</p>
-                        <span class="price">2190 Kč</span>
+                        <!-- !! NAHRAĎTE VLASTNÍM OBRÁZKEM !! -->
+                        <img src="images/placeholder-jacket-black.jpg" alt="YUME Bunda 'Shadow' - Černá" />
+                        <h3>Bunda 'Shadow'</h3>
+                        <p>Lehká větrovka z voděodolného materiálu. Skryté kapsy a minimalistický design. Perfektní do města.</p>
+                        <span class="price">2490 Kč</span>
                     </div>
-                    -->
                 </div>
-
-                <!-- Hravý prvek: Animovaná linka -->
                  <hr class="playful-divider" />
+                 <p>Nenašli jste, co hledáte? Sledujte nás na sociálních sítích nebo se přihlaste k newsletteru pro informace o nových dropech!</p>
             </div>
         </div>
 
         <!-- === Sekce O NÁS === -->
         <div id="onas" class="section">
-            <div class="container">
+             <div class="container narrow-container">
                 <h2>Příběh YUME</h2>
-                <!-- Aktualizovaný obrázek z Unsplash -->
-                <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="Inspirace pro YUME - proces tvorby, nápady, sny" class="about-image" />
-                <p>YUME se zrodilo z vášně pro módu a touhy vytvořit něco víc než jen oblečení. Chceme inspirovat lidi, aby následovali své sny a vyjádřili svou jedinečnost. Naše kořeny jsou v městské kultuře, ale naše vize sahá dál.</p>
-                <p>Klademe důraz na kvalitu materiálů, originální design a udržitelný přístup. Každá kolekce je krokem na naší cestě.</p>
+                 <!-- !! NAHRAĎTE VLASTNÍM OBRÁZKEM !! -->
+                <img src="images/placeholder-about.jpg" alt="Inspirace YUME - skica, náladová fotografie" class="about-image" />
+                <p class="lead">YUME není jen značka, je to filozofie. Zrodila se v roce 2022 z touhy propojit svět streetwearu s hlubším významem – s odvahou snít a následovat vlastní cestu. Věříme, že oblečení může být plátnem pro vaši osobnost.</p>
+                <h3>Naše Hodnoty:</h3>
+                <ul>
+                    <li><strong>Kvalita:</strong> Pečlivě vybíráme materiály a dbáme na precizní zpracování. Chceme, aby vám naše kousky dělaly radost dlouho.</li>
+                    <li><strong>Design:</strong> Hledáme rovnováhu mezi aktuálními trendy a nadčasovou estetikou. Naše designy jsou čisté, funkční a mají svůj charakter.</li>
+                    <li><strong>Komunita:</strong> YUME je pro všechny, kteří se nebojí být sami sebou. Chceme budovat komunitu lidí, kteří se navzájem inspirují.</li>
+                    <li><strong>Udržitelnost:</strong> Postupně se snažíme integrovat udržitelnější postupy do naší výroby a logistiky. Je to cesta, na které se neustále učíme.</li>
+                </ul>
+                 <p>Jsme malý tým s velkými sny, sídlící v srdci Evropy. Každý kus, který vytvoříme, nese kousek naší vášně a vize. Děkujeme, že jste součástí našeho příběhu.</p>
 
-                <!-- Interaktivní časová osa -->
+                <!-- Časová osa zůstává pro ilustraci vývoje -->
                 <div class="timeline">
+                     <h3>Naše Milníky:</h3>
                     <div class="timeline-event">
-                        <span class="year">2022</span> Počáteční nápad & Vize
+                        <span class="year">2022</span> Jiskra Nápadu & První Skici
                     </div>
                      <div class="timeline-event">
-                        <span class="year">2023</span> První návrhy & Prototypy
+                        <span class="year">2023</span> Vývoj Prototypů & Výběr Materiálů
                     </div>
                     <div class="timeline-event">
-                        <span class="year">2024</span> Spuštění YUME!
+                        <span class="year">2024</span> Spuštění E-shopu & První Kolekce
+                    </div>
+                     <div class="timeline-event">
+                        <span class="year">Budoucnost</span> Nové Kolekce & Růst Komunity...
                     </div>
                 </div>
             </div>
-        </div>
-
-         <!-- === Sekce KOLOTOČ ŠTĚSTÍ === -->
-        <div id="kolotoc-stesti" class="section">
-            <div class="container">
-                <h2>Zatočte si o YUME odměnu!</h2>
-                <p>Zkuste své štěstí a vyhrajte slevu na další nákup nebo jinou skvělou cenu!</p>
-
-                <div class="wheel-container">
-                     <div id="wheel">
-                        <!-- Aktualizovaný obrázek kolotoče (abstraktní) z Unsplash -->
-                        <!-- Tento JEDEN obrázek slouží jako grafický podklad. Výseče jsou logické (v JS). -->
-                        <img src="https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Kolotoč štěstí YUME - Barevná abstraktní grafika" />
-                     </div>
-                     <div id="wheel-pointer">▼</div> <!-- Ukazatel -->
-                     <div id="spin-button-container">
-                         <button id="spin-button">Zatočit!</button>
-                     </div>
-                </div>
-                <div id="wheel-result">
-                    <p>Vaše výhra: <span id="result-display">-</span></p>
-                </div>
-
-                <!-- Konfety se spustí při výhře pomocí JS -->
-                <div id="confetti-container"></div>
-            </div>
-        </div>
-
-
-        <!-- === Sekce NEWSLETTER === -->
-        <div id="newsletter" class="section">
-             <div class="container">
-                 <h2>Buďte v obraze!</h2>
-                 <p>Přihlaste se k odběru našeho newsletteru a získejte info o novinkách, slevách a exkluzivních akcích jako první.</p>
-                 <!-- Formulář - Vyžaduje backend pro reálné odeslání -->
-                 <form id="newsletter-form" action="#" method="post"> <!-- Action nahraďte URL vašeho backend scriptu -->
-                     <input type="email" name="email" placeholder="Váš e-mail" required="required" />
-                     <button type="submit">Odebírat</button>
-                 </form>
-             </div>
         </div>
 
         <!-- === Sekce KONTAKT === -->
         <div id="kontakt" class="section">
-            <div class="container">
-                <h2>Spojte se s námi</h2>
-                <p>Máte dotaz, nápad nebo nám chcete jen něco vzkázat? Jsme tu pro vás.</p>
+            <div class="container narrow-container">
+                <h2>Spojte se s Námi</h2>
+                <p class="lead">Máte otázku ohledně produktu, objednávky, nebo se chcete jen podělit o svůj YUME moment? Neváhejte nás kontaktovat! Jsme tu pro vás.</p>
+
                 <div class="contact-info">
-                     <p><strong>Email:</strong> info@yume-streetwear.cz (zatím neaktivní)</p>
-                     <p><strong>Sociální sítě:</strong> Najdete nás na IG, FB, TikTok!</p>
-                     <!-- <p><strong>Telefon:</strong> +420 123 456 789 (Po-Pá 9-17)</p> -->
-                     <!-- <p><strong>Showroom:</strong> Vymyšlená Ulice 123, 110 00 Praha 1 (Pouze po domluvě)</p> -->
+                     <p><strong>Preferovaný kontakt:</strong> E-mail</p>
+                     <p><strong>Email:</strong> <a href="mailto:info@yume-streetwear.placeholder">info@yume-streetwear.placeholder</a> (Odpovídáme obvykle do 24 hodin v pracovní dny)</p>
+                     <p><strong>Sociální sítě:</strong> Najdete nás na Instagramu, Facebooku a TikToku pro rychlé dotazy a inspiraci! (Odkazy v patičce)</p>
+                     <p>Rádi uslyšíme vaše názory, nápady na spolupráci nebo jakékoli připomínky. Vaše zpětná vazba nám pomáhá růst.</p>
                 </div>
 
-                <!-- Kontaktní formulář - Vyžaduje backend pro reálné odeslání -->
-                <form id="contact-form" action="#" method="post"> <!-- Action nahraďte URL vašeho backend scriptu -->
+                <!-- Kontaktní formulář -->
+                <form id="contact-form" action="#" method="post"> <!-- !! Nahraďte # URL vašeho backend scriptu !! -->
+                    <h3>Napište nám přímo:</h3>
                     <div>
-                        <label for="name">Jméno:</label><br />
-                        <input type="text" id="name" name="name" required="required" />
+                        <label for="name">Vaše Jméno:</label><br />
+                        <input type="text" id="name" name="name" required="required" placeholder="Jak vás máme oslovit?"/>
                     </div>
                      <div>
-                        <label for="email_contact">Email:</label><br />
-                        <input type="email" id="email_contact" name="email" required="required" />
+                        <label for="email_contact">Váš Email:</label><br />
+                        <input type="email" id="email_contact" name="email" required="required" placeholder="Abychom vám mohli odpovědět"/>
                     </div>
                      <div>
-                        <label for="message">Zpráva:</label><br />
-                        <textarea id="message" name="message" rows="5" required="required"></textarea>
+                        <label for="subject">Předmět:</label><br />
+                        <input type="text" id="subject" name="subject" placeholder="Např. Dotaz k produktu, Objednávka č. 123"/>
+                    </div>
+                     <div>
+                        <label for="message">Vaše Zpráva:</label><br />
+                        <textarea id="message" name="message" rows="6" required="required" placeholder="Sem napište vaši zprávu..."></textarea>
                     </div>
                     <div>
-                        <button type="submit">Odeslat zprávu</button>
+                        <button type="submit">Odeslat Zprávu</button>
                     </div>
                 </form>
-
-                 <!-- Hravý prvek: Ikona obálky -->
-                 <div class="contact-playful-icon">✉️</div>
             </div>
         </div>
 
-    </div>
+        <!-- === Sekce KOLOTOČ ŠTĚSTÍ (Mimo hlavní navigaci, lze na ni odkázat např. z Home) === -->
+        <div id="kolotoc-stesti" class="section ancillary-section"> <!-- Přidána třída pro odlišení -->
+            <div class="container narrow-container">
+                <h2>Zatočte si o YUME Odměnu!</h2>
+                <p>Jako poděkování naší komunitě jsme připravili Kolotoč štěstí. Zkuste své štěstí a vyhrajte exkluzivní slevu, dopravu zdarma nebo jiný malý dárek od YUME!</p>
+                <p>Každý zákazník může zatočit jednou denně. Výhry nelze kombinovat, pokud není uvedeno jinak.</p>
+
+                <div class="wheel-container">
+                     <div id="wheel">
+                        <!-- !! NAHRAĎTE VLASTNÍM OBRÁZKEM KOLA (10 segmentů) !! -->
+                        <img src="images/placeholder-wheel.png" alt="Kolotoč štěstí YUME" />
+                     </div>
+                     <div id="wheel-pointer">▼</div>
+                     <div id="spin-button-container">
+                         <button id="spin-button">Zatočit Teď!</button>
+                     </div>
+                </div>
+                <div id="wheel-result">
+                    <p>Vaše výhra: <span id="result-display">-</span></p>
+                    <p id="prize-info" class="prize-info-hidden"></p> <!-- Místo pro info o výhře -->
+                </div>
+            </div>
+        </div>
+
+        <!-- === Sekce NEWSLETTER (Mimo hlavní navigaci) === -->
+        <div id="newsletter" class="section ancillary-section">
+             <div class="container narrow-container">
+                 <h2>Staňte se YUME Insiderem</h2>
+                 <p>Chcete být první, kdo se dozví o nových kolekcích, exkluzivních slevách a speciálních akcích? Přihlaste se k odběru našeho newsletteru!</p>
+                 <p>Slibujeme, že vaši schránku nezahltíme. Posíláme jen to nejlepší z YUME světa, maximálně párkrát do měsíce.</p>
+                 <form id="newsletter-form" action="#" method="post"> <!-- !! Nahraďte # URL vašeho backend scriptu !! -->
+                     <input type="email" name="email" placeholder="Zadejte váš e-mail" required="required" />
+                     <button type="submit">Chci Odebírat</button>
+                 </form>
+                 <p class="small-text">Odesláním formuláře souhlasíte se zpracováním osobních údajů.</p>
+             </div>
+        </div>
+
+    </div> <!-- Konec #main-content -->
 
     <!-- ========= FOOTER ========= -->
     <div id="footer">
         <div class="container">
+             <!-- Odkazy na vedlejší sekce -->
+             <div class="footer-links">
+                <a href="#kolotoc-stesti" class="nav-link">Kolotoč Štěstí</a> |
+                <a href="#newsletter" class="nav-link">Newsletter</a> |
+                <a href="#">Obchodní Podmínky</a> | <!-- Doplnit odkaz -->
+                <a href="#">Ochrana Osobních Údajů</a> <!-- Doplnit odkaz -->
+            </div>
             <p>© <span id="current-year">2024</span> YUME Streetwear. Všechna práva vyhrazena.</p>
             <div class="social-links">
-                <!-- Placeholder pro sociální sítě - nahraďte odkazy a ideálně vlastními SVG/PNG ikonami v images/ -->
+                <!-- Placeholder pro sociální sítě - nahraďte odkazy a ikonami v images/ -->
                 <a href="#" title="Instagram"><img src="images/icon-instagram.svg" alt="Instagram" /></a>
                 <a href="#" title="Facebook"><img src="images/icon-facebook.svg" alt="Facebook" /></a>
                 <a href="#" title="TikTok"><img src="images/icon-tiktok.svg" alt="TikTok" /></a>
             </div>
-            <!-- <div class="footer-playful">YUME</div> -->
         </div>
     </div>
 
