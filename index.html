@@ -1,0 +1,36 @@
+
+<!-- index.html (hlavní stránka s přesměrováním) -->
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="refresh" content="0; url=home.html" />
+  <title>YUME</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="fade-out">
+  <div id="loader">
+    <div class="loader-logo">
+      <svg width="120" height="40" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="30" font-family="Helvetica Neue, sans-serif" font-size="28" fill="white" letter-spacing="6">YUME</text>
+      </svg>
+    </div>
+    <div class="loader-spinner"></div>
+  </div>
+
+  <section class="countdown">
+    <h1>Nová kolekce přichází za:</h1>
+    <div id="countdown"></div>
+  </section>
+
+  <section class="wheel">
+    <h2>Kolo štěstí 🎡</h2>
+    <p>Roztoč a zjisti svůj bonus!</p>
+    <button id="spin">Točím!</button>
+    <div id="wheel-result"></div>
+  </section>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
