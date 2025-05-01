@@ -24,15 +24,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginRegisterBtn = $('#login-register-btn'); const loginDropdown = $('#login-dropdown');
     if (loginRegisterBtn && loginDropdown) {
         loginRegisterBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.stopPropagation(); // Zabrání okamžitému zavření
             loginDropdown.classList.toggle('hidden');
-            closeModal(); // Zavře ostatní modaly
-            const newsletterPopup = $('#newsletter-popup'); if(newsletterPopup) newsletterPopup.classList.add('hidden'); // Zavře newsletter
+            // Zavřít ostatní popupy/modaly, pokud jsou otevřené
+            closeModal(); // Zavře modály
+            const newsletterPopup = $('#newsletter-popup'); // Zavře newsletter popup
+            if(newsletterPopup) newsletterPopup.classList.add('hidden');
         });
-        document.addEventListener('click', (e) => { if (!loginDropdown.classList.contains('hidden') && !loginDropdown.contains(e.target) && e.target !== loginRegisterBtn && !loginRegisterBtn.contains(e.target)) { loginDropdown.classList.add('hidden'); } });
+        // Zavření kliknutím mimo
+        document.addEventListener('click', (e) => {
+            if (!loginDropdown.classList.contains('hidden') && !loginDropdown.contains(e.target) && e.target !== loginRegisterBtn && !loginRegisterBtn.contains(e.target)) {
+                loginDropdown.classList.add('hidden');
+            }
+        });
     }
+    // Přepínání tabů v dropdownu
     const tabButtons = $$('#login-dropdown .tab-btn'); const tabContents = $$('#login-dropdown .tab-content');
     tabButtons.forEach(button => { button.addEventListener('click', () => { const targetTab = button.getAttribute('data-tab'); tabButtons.forEach(btn => btn.classList.toggle('active', btn === button)); tabContents.forEach(content => { content.classList.toggle('active', content.id === `${targetTab}-tab`); }); }); });
+    // Formuláře v dropdownu (ukázka)
     const loginForm = $('#login-form'); const registerForm = $('#register-form');
     if(loginForm) { loginForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o přihlášení...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); }
     if(registerForm) { registerForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o registraci...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); }
@@ -94,8 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const winningSegmentIndex = Math.floor(Math.random() * numberOfSegments); const randomFullSpins = Math.floor(Math.random() * 4) + 6; const angleToCenter = (winningSegmentIndex * segmentAngle) + (segmentAngle / 2); const randomOffset = (Math.random() - 0.5) * segmentAngle * 0.7; const targetAngleDelta = (360 * randomFullSpins) + angleToCenter + randomOffset; const finalRotation = currentRotation - targetAngleDelta;
             wheelSpinner.style.transition = 'transform 6s cubic-bezier(0.34, 1.56, 0.64, 1)'; wheelSpinner.style.transform = `rotate(${finalRotation}deg)`; currentRotation = finalRotation % 360;
             setTimeout(() => { isSpinning = false; spinButton.disabled = false; const actualPrize = prizes[winningSegmentIndex]; resultDisplay.innerHTML = actualPrize.text; if (!actualPrize.text.toLowerCase().includes('nic')) {
-                 openModal(prizePopup); // Otevře modal (a ten spustí konfety)
-                 if(prizePopupText) prizePopupText.innerHTML = actualPrize.text; if(prizePopupInfo) prizePopupInfo.textContent = actualPrize.info; if(prizePopupEmoji) { if (actualPrize.text.includes('Sleva')) prizePopupEmoji.textContent = '🏷️'; else if (actualPrize.text.includes('Doprava')) prizePopupEmoji.textContent = '🚚'; else if (actualPrize.text.includes('Nálepka') || actualPrize.text.includes('Klíčenka')) prizePopupEmoji.textContent = '🎁'; else prizePopupEmoji.textContent = '🎉'; }
+                 openModal(prizePopup); if(prizePopupText) prizePopupText.innerHTML = actualPrize.text; if(prizePopupInfo) prizePopupInfo.textContent = actualPrize.info; if(prizePopupEmoji) { if (actualPrize.text.includes('Sleva')) prizePopupEmoji.textContent = '🏷️'; else if (actualPrize.text.includes('Doprava')) prizePopupEmoji.textContent = '🚚'; else if (actualPrize.text.includes('Nálepka') || actualPrize.text.includes('Klíčenka')) prizePopupEmoji.textContent = '🎁'; else prizePopupEmoji.textContent = '🎉'; }
                  } }, 6100);
         });
     }
