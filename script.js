@@ -18,25 +18,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = $$('.nav-link'); const sections = $$('.section');
     function showSection(targetId) { let sectionShown = false; sections.forEach(section => { const isTarget = section && targetId && section.id === targetId.substring(1); section.classList.toggle('active-section', isTarget); if (isTarget) sectionShown = true; }); if (!sectionShown) { const homeSection = $('#home'); if (homeSection) { homeSection.classList.add('active-section'); targetId = '#home'; } } if (targetId !== '#home') window.scrollTo(0, 0); navLinks.forEach(link => link.classList.toggle('active-nav', link.getAttribute('href') === targetId)); }
     navLinks.forEach(link => { link.addEventListener('click', function(event) { const targetId = this.getAttribute('href'); if (targetId && targetId.startsWith('#')) { event.preventDefault(); showSection(targetId); } }); });
-    showSection('#home'); // Default section
+    showSection('#home');
 
     // --- Login/Register Dropdown ---
     const loginRegisterBtn = $('#login-register-btn'); const loginDropdown = $('#login-dropdown');
-    if (loginRegisterBtn && loginDropdown) { loginRegisterBtn.addEventListener('click', (e) => { e.stopPropagation(); loginDropdown.classList.toggle('hidden'); }); document.addEventListener('click', (e) => { if (!loginDropdown.classList.contains('hidden') && !loginDropdown.contains(e.target) && e.target !== loginRegisterBtn && !loginRegisterBtn.contains(e.target)) { loginDropdown.classList.add('hidden'); } }); }
-    const tabButtons = $$('#login-dropdown .tab-btn'); const tabContents = $$('#login-dropdown .tab-content'); tabButtons.forEach(button => { button.addEventListener('click', () => { const targetTab = button.getAttribute('data-tab'); tabButtons.forEach(btn => btn.classList.toggle('active', btn === button)); tabContents.forEach(content => { content.classList.toggle('active', content.id === `${targetTab}-tab`); }); }); });
-    const loginForm = $('#login-form'); const registerForm = $('#register-form'); if(loginForm) { loginForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o přihlášení...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); } if(registerForm) { registerForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o registraci...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); }
+    if (loginRegisterBtn && loginDropdown) {
+        loginRegisterBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Zabrání okamžitému zavření
+            loginDropdown.classList.toggle('hidden');
+            // Zavřít ostatní popupy/modaly, pokud jsou otevřené
+            closeModal();
+            const newsletterPopup = $('#newsletter-popup');
+            if(newsletterPopup) newsletterPopup.classList.add('hidden');
+        });
+        // Zavření kliknutím mimo
+        document.addEventListener('click', (e) => {
+            if (!loginDropdown.classList.contains('hidden') && !loginDropdown.contains(e.target) && e.target !== loginRegisterBtn && !loginRegisterBtn.contains(e.target)) {
+                loginDropdown.classList.add('hidden');
+            }
+        });
+    }
+    const tabButtons = $$('#login-dropdown .tab-btn'); const tabContents = $$('#login-dropdown .tab-content');
+    tabButtons.forEach(button => { button.addEventListener('click', () => { const targetTab = button.getAttribute('data-tab'); tabButtons.forEach(btn => btn.classList.toggle('active', btn === button)); tabContents.forEach(content => { content.classList.toggle('active', content.id === `${targetTab}-tab`); }); }); });
+    const loginForm = $('#login-form'); const registerForm = $('#register-form');
+    if(loginForm) { loginForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o přihlášení...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); }
+    if(registerForm) { registerForm.addEventListener('submit', (e) => { e.preventDefault(); alert('Pokus o registraci...\n(Backend není implementován.)'); loginDropdown.classList.add('hidden'); }); }
+
 
     // --- Modální Okna (Výherní a Košík) ---
     const modalOverlay = $('#modal-overlay'); const allModals = $$('.modal'); const prizePopup = $('#prize-popup'); const prizePopupText = $('#prize-popup-text'); const prizePopupInfo = $('#prize-popup-info'); const prizePopupEmoji = $('.prize-emoji-big'); const prizePopupCloseBtns = $$('#prize-popup .close-modal-btn, #prize-popup .close-modal-btn-bottom'); const cartModal = $('#cart-modal'); const cartBtn = $('#cart-btn');
-    function openModal(modalElement) {
-        if (!modalElement) return;
-        closeAllModals(); // Zavřít ostatní před otevřením nového
-        modalOverlay.classList.remove('hidden');
-        modalElement.classList.remove('hidden');
-        body.style.overflow = 'hidden';
+    function openModal(modalElement) { if (!modalElement) return; closeAllModals(); // Zavřít ostatní modaly
+        const loginDropdown = $('#login-dropdown'); if(loginDropdown) loginDropdown.classList.add('hidden'); // Zavřít i login dropdown
+        const newsletterPopup = $('#newsletter-popup'); if(newsletterPopup) newsletterPopup.classList.add('hidden'); // Zavřít i newsletter popup
+
+        modalOverlay.classList.remove('hidden'); modalElement.classList.remove('hidden'); body.style.overflow = 'hidden';
         if(modalElement.id === 'cart-modal') { renderCartItems(); }
-        // Spustit konfety POUZE pro výherní popup
-        if(modalElement.id === 'prize-popup') { triggerConfetti(); }
+        if(modalElement.id === 'prize-popup') { triggerConfetti(); } // Konfety jen pro výhru
     }
     function closeModal() { modalOverlay.classList.add('hidden'); allModals.forEach(modal => modal.classList.add('hidden')); body.style.overflow = ''; }
     function closeAllModals() { modalOverlay.classList.add('hidden'); allModals.forEach(modal => modal.classList.add('hidden')); body.style.overflow = ''; }
@@ -50,10 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const newsletterPopupShownSession = sessionStorage.getItem('newsletterPopupShown');
          if (!newsletterPopupShownSession) {
             const newsletterPopupTimer = setTimeout(() => {
-                // Zobrazit jen pokud není otevřen login/register dropdown nebo jiný modal
                 const isAnyModalOpen = $$('.modal:not(.hidden)').length > 0;
                 const isLoginDropdownOpen = loginDropdown && !loginDropdown.classList.contains('hidden');
-                if(!isAnyModalOpen && !isLoginDropdownOpen) {
+                if(!isAnyModalOpen && !isLoginDropdownOpen) { // Zkontrolovat i login dropdown
                     newsletterPopup.classList.remove('hidden');
                     sessionStorage.setItem('newsletterPopupShown', 'true');
                 }
@@ -74,15 +90,53 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateQuantity(cartItemId, newQuantity) { const itemIndex = cart.findIndex(item => item.cartId === cartItemId); if (itemIndex > -1) { cart[itemIndex].quantity = Math.max(1, newQuantity); saveCart(); updateCartIcon(); renderCartItems(); } }
     function removeFromCart(cartItemId) { cart = cart.filter(item => item.cartId !== cartItemId); saveCart(); updateCartIcon(); renderCartItems(); }
     function renderCartItems() { if (!cartItemsContainer || !cartTotalElement || !checkoutBtn || !emptyCartMessage) return; cartItemsContainer.innerHTML = ''; let total = 0; if (cart.length === 0) { emptyCartMessage.classList.remove('hidden'); checkoutBtn.disabled = true; } else { emptyCartMessage.classList.add('hidden'); cart.forEach(item => { total += item.price * item.quantity; const itemElement = document.createElement('div'); itemElement.classList.add('cart-item'); itemElement.innerHTML = `<div class="cart-item-image"><img src="${item.image}" alt="${item.name}" /></div><div class="cart-item-details"><h4>${item.name}</h4><p class="cart-item-price">${formatPrice(item.price)} / ks</p><p class="cart-item-size">Velikost: ${item.size || 'N/A'}</p></div><div class="cart-item-controls"><button class="quantity-btn" data-cart-id="${item.cartId}" data-change="-1">-</button><input type="number" value="${item.quantity}" min="1" data-cart-id="${item.cartId}" class="quantity-input" aria-label="Množství"/><button class="quantity-btn" data-cart-id="${item.cartId}" data-change="1">+</button></div><button class="cart-item-remove-btn" title="Odstranit" data-cart-id="${item.cartId}">×</button>`; cartItemsContainer.appendChild(itemElement); }); checkoutBtn.disabled = false; } cartTotalElement.textContent = formatPrice(total); attachCartItemListeners(); }
-    function attachCartItemListeners() { $$('#cart-items-container .quantity-btn').forEach(btn => { const newBtn = btn.cloneNode(true); btn.parentNode.replaceChild(newBtn, btn); newBtn.addEventListener('click', () => { const id = newBtn.getAttribute('data-cart-id'); const change = parseInt(newBtn.getAttribute('data-change')); const item = cart.find(i => i.cartId === id); if (item) updateQuantity(id, item.quantity + change); }); }); $$('#cart-items-container .quantity-input').forEach(input => { const newInput = input.cloneNode(true); input.parentNode.replaceChild(newInput, input); newInput.addEventListener('change', () => { const id = newInput.getAttribute('data-cart-id'); let newQuantity = parseInt(newInput.value); if(isNaN(newQuantity) || newQuantity < 1) newQuantity = 1; newInput.value = newQuantity; updateQuantity(id, newQuantity); }); }); $$('#cart-items-container .cart-item-remove-btn').forEach(btn => { const newBtn = btn.cloneNode(true); btn.parentNode.replaceChild(newBtn, btn); newBtn.addEventListener('click', () => { if (confirm('Opravdu odstranit?')) { const id = newBtn.getAttribute('data-cart-id'); removeFromCart(id); } }); }); }
+    function attachCartItemListeners() { // Používáme event delegation pro robustnější řešení
+        if(!cartItemsContainer) return;
+        // Odstranit POUZE listenery navázané touto funkcí (pokud existují) - složitější, delegace je lepší
+        // Místo toho použijeme event delegation na kontejner
+        cartItemsContainer.replaceWith(cartItemsContainer.cloneNode(true)); // Naklonovat kontejner pro odstranění starých listenerů - jednoduché řešení
+        cartItemsContainer = $('#cart-items-container'); // Znovu vybrat nový kontejner
+
+        cartItemsContainer.addEventListener('click', function(event) {
+            const target = event.target;
+            // Množství +/-
+            if (target.classList.contains('quantity-btn')) {
+                const id = target.getAttribute('data-cart-id');
+                const change = parseInt(target.getAttribute('data-change'));
+                const item = cart.find(i => i.cartId === id);
+                if (item) updateQuantity(id, item.quantity + change);
+            }
+            // Odstranit
+            if (target.classList.contains('cart-item-remove-btn')) {
+                 if (confirm('Opravdu odstranit?')) {
+                     const id = target.getAttribute('data-cart-id');
+                     removeFromCart(id);
+                 }
+            }
+        });
+         cartItemsContainer.addEventListener('change', function(event) {
+            const target = event.target;
+            // Změna inputu množství
+            if (target.classList.contains('quantity-input')) {
+                const id = target.getAttribute('data-cart-id');
+                let newQuantity = parseInt(target.value);
+                if (isNaN(newQuantity) || newQuantity < 1) newQuantity = 1;
+                target.value = newQuantity; // Opravit hodnotu v inputu
+                updateQuantity(id, newQuantity);
+            }
+        });
+    }
+    // Listener pro výběr velikosti
     $$('.size-select').forEach(select => { select.addEventListener('change', function() { const productItem = this.closest('.product-item'); const addToCartBtn = productItem.querySelector('.add-to-cart-btn'); if(addToCartBtn) addToCartBtn.disabled = !this.value; }); });
-    $$('.add-to-cart-btn').forEach(button => { button.addEventListener('click', function() { const productElement = this.closest('.product-item'); const sizeSelect = productElement.querySelector('.size-select'); if (productElement && sizeSelect && sizeSelect.value) { const id = productElement.getAttribute('data-product-id'); const name = productElement.getAttribute('data-product-name'); const price = productElement.getAttribute('data-product-price'); const image = productElement.querySelector('img')?.getAttribute('src') || 'images/placeholder.png'; /* Use querySelector for image src */ const size = sizeSelect.value; addToCart(id, name, price, image, size); } else if (sizeSelect && !sizeSelect.value) { alert('Prosím, vyberte velikost.'); sizeSelect.focus(); } }); });
+    // Listener pro tlačítka "Do košíku"
+    $$('.add-to-cart-btn').forEach(button => { button.addEventListener('click', function() { const productElement = this.closest('.product-item'); const sizeSelect = productElement.querySelector('.size-select'); if (productElement && sizeSelect && sizeSelect.value) { const id = productElement.getAttribute('data-product-id'); const name = productElement.getAttribute('data-product-name'); const price = productElement.getAttribute('data-product-price'); const image = productElement.querySelector('img')?.getAttribute('src') || 'images/placeholder.png'; const size = sizeSelect.value; addToCart(id, name, price, image, size); } else if (sizeSelect && !sizeSelect.value) { alert('Prosím, vyberte velikost.'); sizeSelect.focus(); } }); });
+    // Listener pro tlačítko Checkout
     if(checkoutBtn) { checkoutBtn.addEventListener('click', () => { if (cart.length > 0) { alert('Pokračujete k pokladně...\n(Toto je pouze simulace.)'); closeModal(); } }); }
 
-    // --- Jednoduchá Slideshow (Opravena) ---
-    const slides = $$('.slide'); const prevButton = $('.slide-prev'); const nextButton = $('.slide-next'); let currentSlide = 0; let slideInterval;
-    function prevSlideHandler() { prevSlide(); stopSlideShow(); } function nextSlideHandler() { nextSlide(); stopSlideShow(); }
-    if (slides.length > 0 && prevButton && nextButton) { const totalSlides = slides.length; function showSlide(index) { slides.forEach((s, i) => s.classList.toggle('active', i === index)); } function nextSlide() { currentSlide = (currentSlide + 1) % totalSlides; showSlide(currentSlide); } function prevSlide() { currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; showSlide(currentSlide); } function startSlideShow() { stopSlideShow(); slideInterval = setInterval(nextSlide, 5500); } function stopSlideShow() { clearInterval(slideInterval); } showSlide(currentSlide); prevButton.removeEventListener('click', prevSlideHandler); nextButton.removeEventListener('click', nextSlideHandler); prevButton.addEventListener('click', prevSlideHandler); nextButton.addEventListener('click', nextSlideHandler); const slideshowElement = $('.slideshow'); if (slideshowElement) { slideshowElement.removeEventListener('mouseenter', stopSlideShow); slideshowElement.removeEventListener('mouseleave', startSlideShow); slideshowElement.addEventListener('mouseenter', stopSlideShow); slideshowElement.addEventListener('mouseleave', startSlideShow); } startSlideShow(); } else { console.warn("Slideshow elements not found or incomplete."); }
+     // --- Jednoduchá Slideshow (Opravena) ---
+     const slides = $$('.slide'); const prevButton = $('.slide-prev'); const nextButton = $('.slide-next'); let currentSlide = 0; let slideInterval;
+     function prevSlideHandler() { prevSlide(); stopSlideShow(); } function nextSlideHandler() { nextSlide(); stopSlideShow(); }
+     if (slides.length > 0 && prevButton && nextButton) { const totalSlides = slides.length; function showSlide(index) { slides.forEach((s, i) => s.classList.toggle('active', i === index)); } function nextSlide() { currentSlide = (currentSlide + 1) % totalSlides; showSlide(currentSlide); } function prevSlide() { currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; showSlide(currentSlide); } function startSlideShow() { stopSlideShow(); slideInterval = setInterval(nextSlide, 5500); } function stopSlideShow() { clearInterval(slideInterval); } showSlide(currentSlide); prevButton.removeEventListener('click', prevSlideHandler); nextButton.removeEventListener('click', nextSlideHandler); prevButton.addEventListener('click', prevSlideHandler); nextButton.addEventListener('click', nextSlideHandler); const slideshowElement = $('.slideshow'); if (slideshowElement) { slideshowElement.removeEventListener('mouseenter', stopSlideShow); slideshowElement.removeEventListener('mouseleave', startSlideShow); slideshowElement.addEventListener('mouseenter', stopSlideShow); slideshowElement.addEventListener('mouseleave', startSlideShow); } startSlideShow(); } else { console.warn("Slideshow elements not found or incomplete."); }
 
     // --- Kolotoč Štěstí ---
     const wheelSpinner = $('#wheel-spinner'); const spinButton = $('#spin-button'); const resultDisplay = $('#result-display'); const wheelSpinSound = $('#wheel-spin-sound');
