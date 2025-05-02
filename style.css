@@ -1,0 +1,203 @@
+/* --- Import Fontů --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;500&display=swap');
+
+/* --- Základní nastavení a Reset --- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* --- Definice CSS Proměnných --- */
+:root {
+    --bg-color-light: #ffffff; --text-color-light: #222222; --primary-color-light: #555555; --secondary-color-light: #f5f5f5; --accent-color-light: #000000; --border-color-light: #dddddd; --primary-color-light-rgb: 85, 85, 85; --accent-color-light-rgb: 0, 0, 0; --bg-color-dark: #121212; --text-color-dark: #e0e0e0; --primary-color-dark: #bbbbbb; --secondary-color-dark: #1e1e1e; --accent-color-dark: #ffffff; --border-color-dark: #333333; --primary-color-dark-rgb: 187, 187, 187; --accent-color-dark-rgb: 255, 255, 255; --font-main: 'Poppins', sans-serif; --font-heading: 'Montserrat', sans-serif; --bg-color: var(--bg-color-light); --text-color: var(--text-color-light); --primary-color: var(--primary-color-light); --secondary-color: var(--secondary-color-light); --accent-color: var(--accent-color-light); --border-color: var(--border-color-light); --primary-color-rgb: var(--primary-color-light-rgb); --accent-color-rgb: var(--accent-color-light-rgb);
+}
+body.dark-mode {
+    --bg-color: var(--bg-color-dark); --text-color: var(--text-color-dark); --primary-color: var(--primary-color-dark); --secondary-color: var(--secondary-color-dark); --accent-color: var(--accent-color-dark); --border-color: var(--border-color-dark); --primary-color-rgb: var(--primary-color-dark-rgb); --accent-color-rgb: var(--accent-color-dark-rgb);
+}
+
+/* --- Globální Styly --- */
+body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); line-height: 1.7; transition: background-color 0.4s ease, color 0.4s ease; position: relative; overflow-x: hidden; }
+.container { max-width: 1140px; margin: 0 auto; padding: 0 20px; } .narrow-container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+h1, h2, h3 { font-family: var(--font-heading); margin-bottom: 1rem; color: var(--text-color); font-weight: 700; } h2 { font-size: 2.6rem; text-align: center; margin-bottom: 2.5rem; font-weight: 600; } h3 { font-size: 1.5rem; margin-bottom: 1.2rem; font-weight: 600; color: var(--primary-color); text-align: center; } h4 { font-family: var(--font-heading); margin-bottom: 0.5rem; color: var(--text-color); font-weight: 600; font-size: 1.1rem; } p { margin-bottom: 1.3rem; } p.lead { font-size: 1.15rem; color: var(--primary-color); margin-bottom: 1.5rem; font-weight: 400; text-align: center; } a { color: var(--primary-color); text-decoration: none; transition: color 0.3s ease; } a:hover { color: var(--accent-color); } img { max-width: 100%; height: auto; display: block; } ul { list-style: disc; margin-left: 25px; margin-bottom: 1.5rem; padding-left: 5px; } li { margin-bottom: 0.6rem; }
+button, input[type="submit"], .cta-button { cursor: pointer; padding: 12px 28px; border: 1px solid transparent; border-radius: 5px; background-color: var(--accent-color); color: var(--bg-color); font-family: var(--font-heading); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease, border-color 0.3s ease; }
+button:hover, input[type="submit"]:hover, .cta-button:hover { background-color: transparent; color: var(--accent-color); border: 1px solid var(--accent-color); transform: translateY(-2px); }
+button:disabled { opacity: 0.6; cursor: not-allowed; background-color: var(--primary-color) !important; border-color: var(--primary-color) !important; color: var(--secondary-color) !important; transform: none !important; box-shadow: none !important; }
+.small-text { font-size: 0.8rem; color: var(--primary-color); opacity: 0.8; text-align: center; margin-top: 1rem; }
+.hidden {
+    /* Použijeme visibility místo display pro zachování layoutu při animaci */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* --- Struktura pro SPA --- */
+.section { display: none; padding: 80px 0; min-height: calc(80vh - 80px); opacity: 0; animation: fadeInSection 0.6s ease-out forwards; position: relative; overflow: hidden; }
+.section.active-section { display: block; }
+.ancillary-section { background-color: var(--secondary-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+@keyframes fadeInSection { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- Grafické Prvky --- */
+.graphic-element { position: absolute; z-index: -1; opacity: 0.05; color: var(--primary-color); pointer-events: none; user-select: none; } .moon-icon-large { font-size: 15rem; top: 50px; transform: rotate(-15deg); } .graphic-float-left { left: 5%; } .graphic-top-right { font-size: 12rem; top: 30px; right: 5%; content: '∗'; transform: rotate(25deg); opacity: 0.04; } .abstract-shape { /* TODO */ } .simple-circle { width: 150px; height: 150px; border: 15px solid var(--primary-color); border-radius: 50%; bottom: -50px; opacity: 0.04; } .graphic-bottom-left { left: -30px; } .chess-icon { font-size: 10rem; top: 60px; right: 10%; transform: rotate(10deg); opacity: 0.08; } .envelope-icon { font-size: 10rem; top: 40px; opacity: 0.06; } .graphic-top-left { left: 5%; } .playful-divider { border: none; height: 1px; background: var(--border-color); margin: 60px auto; width: 80px; } .star-divider { background: none; text-align: center; margin: 50px auto; width: auto; } .star-divider::before { content: "✦ ✦ ✦"; font-size: 1.2rem; color: var(--primary-color); opacity: 0.6; letter-spacing: 10px; }
+
+/* --- Efekt Sněžení --- */
+#snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; } .snowflake { position: absolute; top: -10px; background-color: var(--primary-color-dark); border-radius: 50%; opacity: 0.6; animation: snowfall linear infinite; will-change: transform; }
+@keyframes snowfall { 0% { transform: translate3d(var(--left-ini), 0, 0); } 100% { transform: translate3d(var(--left-end), 105vh, 0); } }
+
+/* --- Header --- */
+header#header { background-color: var(--bg-color); padding: 15px 0; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border-color); transition: background-color 0.4s ease, border-color 0.4s ease; }
+header#header .header-container { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+#logo { flex-shrink: 0; } #logo h1 { margin: 0; font-size: 2.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; } #logo a { color: var(--text-color); display: flex; align-items: center; gap: 5px; } #logo a:hover { color: var(--primary-color); }
+.header-info { font-size: 0.8rem; color: var(--primary-color); opacity: 0.9; white-space: nowrap; text-align: center; flex-grow: 0.5; }
+nav#nav { flex-grow: 1; } nav#nav ul { display: flex; justify-content: center; list-style: none; } nav#nav li { margin: 0 15px; } nav#nav a { font-weight: 500; color: var(--text-color); position: relative; padding-bottom: 8px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; } nav#nav a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; transform: translateX(-50%); background-color: var(--accent-color); transition: width 0.3s ease; } nav#nav a:hover::after, nav#nav a.active-nav::after { width: 100%; } nav#nav a.active-nav { color: var(--accent-color); font-weight: 600; }
+.header-actions { display: flex; align-items: center; gap: 15px; flex-shrink: 0; }
+#theme-switcher button { background: none; border: 1px solid var(--border-color); border-radius: 50%; font-size: 1.3rem; padding: 8px; color: var(--text-color); cursor: pointer; width: 40px; height: 40px; line-height: 1; transition: background-color 0.3s, border-color 0.3s, color 0.3s; } #theme-switcher button:hover { background-color: var(--secondary-color); border-color: var(--primary-color); color: var(--primary-color); }
+.login-container { position: relative; display: inline-block; z-index: 1100; } /* <<-- ZAJIŠTĚNO */
+#login-register-btn { background: none; border: none; padding: 5px; cursor: pointer; color: var(--text-color); } #login-register-btn svg { display: block; } #login-register-btn:hover { color: var(--primary-color); }
+#cart-btn { background: none; border: none; padding: 5px; cursor: pointer; color: var(--text-color); position: relative; } #cart-btn svg { display: block; } #cart-btn:hover { color: var(--primary-color); }
+#cart-count { position: absolute; top: -5px; right: -8px; background-color: var(--accent-color); color: var(--bg-color); border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; line-height: 18px; text-align: center; font-weight: bold; transition: transform 0.2s ease; }
+#cart-count.updated { transform: scale(1.2); }
+
+/* --- Login/Register Dropdown (Opraveno pozicování) --- */
+#login-dropdown {
+    position: absolute;      /* Pozicování vůči .login-container */
+    top: calc(100% + 15px);  /* Mezera pod tlačítkem */
+    right: 0;                /* Zarovnat vpravo k rodiči */
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    z-index: 1100;           /* Vysoký z-index */
+    width: 280px;
+    padding: 15px;
+    opacity: 0;
+    /* Odstraněna transformace pro jednodušší pozicování */
+    /* transform: translateY(-10px); */
+    transition: opacity 0.25s ease-out, visibility 0s 0.25s linear; /* Fade-out přechod, visibility se mění až po něm */
+    visibility: hidden;     /* Nahrazuje display: none pro animaci */
+    pointer-events: none;
+}
+#login-dropdown:not(.hidden) {
+    opacity: 1;
+    /* transform: translateY(0); */
+    visibility: visible;
+    transition: opacity 0.25s ease-out, visibility 0s 0s linear; /* Okamžité zviditelnění */
+    pointer-events: auto;
+}
+/* Šipka nahoru u dropdownu */
+#login-dropdown::before {
+    content: '';
+    position: absolute;
+    bottom: 100%; /* Umístit nad dropdown */
+    right: 15px;  /* <<-- Pozice šipky nad ikonou (cca) */
+    margin-bottom: 0px; /* <<-- Posunout těsně nad okraj */
+    width: 12px; height: 12px;
+    background-color: var(--secondary-color);
+    border-top: 1px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    transform: rotate(45deg);
+    z-index: 1099; /* Těsně pod dropdownem */
+    pointer-events: none; /* Aby neblokovala kliknutí */
+}
+#login-dropdown .login-register-tabs { margin-bottom: 15px; display: flex; } #login-dropdown .tab-btn { background: none; border: none; padding: 8px 10px; cursor: pointer; font-size: 0.9rem; color: var(--primary-color); position: relative; bottom: -1px; border-bottom: 3px solid transparent; flex-grow: 1; text-align: center; } #login-dropdown .tab-btn.active { color: var(--text-color); border-bottom-color: var(--accent-color); font-weight: 600; }
+#login-dropdown .tab-content { display: none; } #login-dropdown .tab-content.active { display: block; animation: fadeInTab 0.4s ease; } @keyframes fadeInTab { from { opacity: 0; } to { opacity: 1; } }
+#login-dropdown .form-group-small { margin-bottom: 10px; text-align: left; } #login-dropdown label { font-size: 0.85rem; margin-bottom: 3px; display: block; }
+#login-dropdown input[type="email"], #login-dropdown input[type="password"], #login-dropdown input[type="text"] { width: 100%; padding: 8px 10px; font-size: 0.9rem; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 4px; }
+#login-dropdown .small-btn { width: 100%; margin-top: 10px; padding: 10px; font-size: 0.85rem; }
+
+/* --- Sekce Home --- */
+#home { text-align: center; } #home .cta-button { display: inline-block; margin-top: 1.5rem; }
+
+/* --- Slideshow --- */
+.slideshow { position: relative; max-width: 900px; margin: 3rem auto 3rem auto; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); } .slide { display: none; position: relative; width: 100%; } .slide img { width: 100%; height: 450px; object-fit: cover; filter: brightness(0.9); } .slide.active { display: block; animation: fadeIn 1.5s ease-in-out; } @keyframes fadeIn { from { opacity: 0.6; } to { opacity: 1; } } .slide-caption { position: absolute; bottom: 25px; left: 25px; background-color: rgba(0, 0, 0, 0.7); color: #fff; padding: 10px 18px; border-radius: 5px; font-size: 1.1rem; font-family: var(--font-heading); font-weight: 600; text-align: left; } .slide-prev, .slide-next { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(var(--accent-color-rgb), 0.3); color: var(--bg-color); border: none; padding: 15px; font-size: 1.8rem; cursor: pointer; z-index: 10; border-radius: 50%; width: 50px; height: 50px; line-height: 20px; transition: background-color 0.3s ease; } .slide-prev:hover, .slide-next:hover { background-color: rgba(var(--accent-color-rgb), 0.6); } .slide-prev { left: 20px; } .slide-next { right: 20px; }
+
+/* --- Sekce Kolekce (Kompaktnější) --- */
+#kolekce .lead { text-align: center; }
+.category-group { margin-bottom: 35px; }
+.category-group h3 { text-align: left; margin-bottom: 0.5rem; padding-bottom: 8px; border-bottom: 2px solid var(--primary-color); display: inline-block; margin-left: 0; }
+.category-group p { text-align: left; max-width: 800px; color: var(--primary-color); margin-bottom: 1.5rem; }
+.product-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 1rem; }
+.product-item { background-color: var(--secondary-color); padding: 0 0 15px 0; border-radius: 8px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid var(--border-color); overflow: hidden; display: flex; flex-direction: column; position: relative; padding-top: 0; max-width: 300px; margin-left: auto; margin-right: auto; }
+.product-item:hover { transform: translateY(-6px); box-shadow: 0 10px 20px rgba(var(--accent-color-rgb), 0.08); } .product-item img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; transition: transform 0.4s ease, filter 0.4s ease; filter: grayscale(20%) brightness(0.95); margin-bottom: 1rem; } .product-item:hover img { transform: scale(1.03); filter: grayscale(0%) brightness(1); } .product-item h3 { color: var(--text-color); font-size: 1.2rem; margin-top: 0; padding: 0 15px; margin-bottom: 0.5rem; } .product-item p { font-size: 0.9rem; padding: 0 20px; flex-grow: 1; color: var(--primary-color); text-align: center; margin-bottom: 1rem; } .price { font-weight: 600; color: var(--text-color); font-size: 1.1rem; margin: 0.5rem 0 1rem 0; display: block; }
+.product-controls { padding: 0 20px 15px 20px; margin-top: auto; display: flex; flex-direction: column; gap: 10px; } .size-select { display: block; width: 100%; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--bg-color); color: var(--text-color); font-family: var(--font-main); font-size: 0.9rem; cursor: pointer; } .size-select:focus { outline: none; border-color: var(--primary-color); } .add-to-cart-btn { padding: 10px 20px; font-size: 0.85rem; width: 100%; } .add-to-cart-btn.added { background-color: var(--primary-color); color: var(--secondary-color); border-color: var(--primary-color); cursor: default; } .add-to-cart-btn.added::after { content: ' ✓'; }
+
+/* --- Sekce O nás --- */
+#onas .lead { text-align: left; } #onas h2 { text-align: left; } #onas h3 { text-align: left; margin-top: 2rem; } .about-image { max-width: 100%; border-radius: 8px; margin-bottom: 2.5rem; border: 1px solid var(--border-color); } .timeline { margin-top: 3rem; position: relative; padding: 20px 0; max-width: 700px; width: 100%; margin-left: 0; } .timeline::before { content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background-color: var(--border-color); } .timeline-event { position: relative; margin-bottom: 30px; padding: 15px 25px; background-color: var(--secondary-color); border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 3px 8px rgba(var(--accent-color-rgb), 0.05); margin-left: 40px; opacity: 0; transition: opacity 0.5s ease-out, transform 0.5s ease-out; transform: translateX(-15px); text-align: left; } .timeline-event.is-visible { opacity: 1; transform: translateX(0); } .timeline-event::before { content: ''; position: absolute; top: 18px; left: -29px; width: 12px; height: 12px; background-color: var(--primary-color); border-radius: 50%; border: 3px solid var(--bg-color); z-index: 1; } .timeline-event .year { font-weight: 700; color: var(--accent-color); display: block; margin-bottom: 8px; font-size: 1rem; }
+
+/* --- Sekce Kolotoč Štěstí (v Home) --- */
+.home-subsection { margin-top: 60px; padding: 50px 0; background-color: var(--secondary-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); border-radius: 8px; text-align: center; } .home-subsection h3 { font-size: 1.8rem; color: var(--text-color); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; } .home-subsection p { color: var(--primary-color); max-width: 600px; margin-left: auto; margin-right: auto; } .spin-icon { display: inline-block; animation: spinSimple 3s linear infinite; } @keyframes spinSimple { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.wheel-outer-wrapper { display: inline-block; position: relative; padding: 10px; } .wheel-outer-wrapper::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; box-shadow: 0 0 25px rgba(var(--primary-color-rgb), 0.2); z-index: 0; transition: box-shadow 0.5s ease; } .wheel-outer-wrapper:hover::before { box-shadow: 0 0 35px rgba(var(--primary-color-rgb), 0.3); } .wheel-container { position: relative; width: 300px; height: 300px; margin: 0 auto; z-index: 1; }
+#wheel { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; position: relative; border: 6px solid var(--border-color); box-shadow: inset 0 0 10px rgba(0,0,0,0.15); background-color: var(--bg-color); }
+#wheel-spinner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transition: transform 6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+#wheel-background { display: block; width: 100%; height: 100%; object-fit: cover; }
+#wheel-center-graphic { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 55%; height: 55%; z-index: 2; pointer-events: none; display: flex; justify-content: center; align-items: center; } #wheel-center-graphic img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.2)); }
+#wheel-pointer { position: absolute; top: -12px; left: 50%; transform: translateX(-50%) rotate(180deg); font-size: 2.5rem; color: var(--accent-color); z-index: 10; text-shadow: none; transition: transform 0.3s ease; } #spin-button:hover ~ .wheel-outer-wrapper .wheel-container #wheel-pointer { transform: translateX(-50%) rotate(180deg) scale(1.1); }
+#spin-button-container { margin-top: 1.5rem; } #spin-button { transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; } #spin-button:hover { box-shadow: 0 5px 15px rgba(var(--accent-color-rgb), 0.2); } #spin-button:active { transform: translateY(0) scale(0.98); } #spin-button:disabled { background-color: var(--primary-color); border-color: var(--primary-color); color: var(--bg-color); opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+#wheel-result-container { margin-top: 1.2rem; min-height: 2em; padding-bottom: 5px; } #wheel-result { font-size: 1.1rem; font-weight: 500; color: var(--primary-color); opacity: 0.8; margin-bottom: 0; } #result-display { color: var(--text-color); font-weight: 600; }
+
+/* --- Konfety --- */
+#confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2000; overflow: hidden; } .confetti { position: absolute; width: 8px; height: 15px; background-color: var(--primary-color); opacity: 0.9; animation: fall var(--fall-duration, 3s) linear var(--fall-delay, 0s) forwards; } .confetti.rectangle { border-radius: 0; } .confetti.circle { width: 10px; height: 10px; border-radius: 50%; } @keyframes fall { 0% { transform: translateY(-10vh) rotateZ(0deg); } 100% { transform: translateY(110vh) rotateZ(var(--rotate-end, 720deg)); opacity: 0; } }
+
+/* --- Sekce Hrej s YUME --- */
+#hrat h2, #hrat p { text-align: center; } #chess-game-placeholder { margin-top: 2rem; padding: 30px; background-color: var(--secondary-color); border: 1px solid var(--border-color); border-radius: 8px; text-align: center; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; } #chess-game-placeholder h3 { color: var(--primary-color); } .loading-spinner { border: 4px solid var(--secondary-color); border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } #chess-game-placeholder p { font-size: 0.9rem; color: var(--primary-color); max-width: 500px; margin: 10px auto; } #claim-reward-btn { margin-top: 20px; }
+
+/* --- Sekce Kontakt (Vylepšená) --- */
+#kontakt .lead, #kontakt h2 { text-align: center; }
+.contact-wrapper { display: flex; flex-wrap: wrap; gap: 40px; margin-top: 3rem; align-items: stretch; background-color: var(--secondary-color); padding: 40px; border-radius: 8px; border: 1px solid var(--border-color); }
+.contact-details { flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 20px; } .contact-details h3 { text-align: left; margin-bottom: 1rem; }
+.contact-item { display: flex; align-items: flex-start; gap: 15px; text-align: left; } .contact-item svg { flex-shrink: 0; color: var(--primary-color); width: 20px; height: 20px; margin-top: 3px; } .contact-item strong { display: block; color: var(--text-color); font-weight: 600; margin-bottom: 2px; } .contact-item a { word-break: break-all; }
+.contact-form-container { flex: 1.5; min-width: 320px; } .contact-form-container h3 { text-align: left; margin-bottom: 1rem; } #contact-form { margin-top: 0; } .form-row { display: flex; gap: 20px; flex-wrap: wrap; } .form-group { margin-bottom: 1.2rem; flex-grow: 1; } .form-group.half-width { flex-basis: calc(50% - 10px); } #contact-form label { margin-bottom: 0.4rem; font-weight: 500; font-size: 0.85rem; display: block; text-align: left; } #contact-form input[type="text"], #contact-form input[type="email"], #contact-form textarea { width: 100%; padding: 12px 15px; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 4px; transition: border-color 0.3s, box-shadow 0.3s;} #contact-form input[type="text"]:focus, #contact-form input[type="email"]:focus, #contact-form textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 5px rgba(var(--primary-color-rgb), 0.2);} #contact-form textarea { resize: vertical; min-height: 100px; }
+#contact-form button { width: auto; margin-top: 0.5rem; float: right; }
+
+/* --- Sekce Newsletter --- */
+#newsletter { text-align: center; } #newsletter p { max-width: 600px; margin-left: auto; margin-right: auto; } #newsletter-form { margin-top: 2rem; flex-direction: row; justify-content: center; align-items: center; gap: 1rem; } #newsletter-form input[type="email"] { flex-grow: 1; max-width: 400px; } #newsletter-form button { flex-shrink: 0; }
+
+/* --- Rohové Pop-up Okno (Newsletter) --- */
+.corner-popup { position: fixed; bottom: 20px; left: 50%; transform: translate(-50%, 110%); background-color: var(--secondary-color); color: var(--text-color); padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 1070; max-width: 350px; width: calc(100% - 40px); border: 1px solid var(--border-color); transition: transform 0.5s ease-out; }
+.corner-popup:not(.hidden) { transform: translate(-50%, 0); }
+.popup-content { text-align: left; } .corner-popup h4 { text-align: center; margin-bottom: 10px; } .corner-popup p { font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-color); text-align: center; }
+.close-corner-popup-btn { position: absolute; top: 5px; right: 8px; background: none; border: none; font-size: 1.6rem; color: var(--primary-color); cursor: pointer; line-height: 1; padding: 0; } .close-corner-popup-btn:hover { color: var(--accent-color); }
+.corner-popup form { display: flex; gap: 8px; margin-top: 10px; } .corner-popup input[type="email"] { padding: 8px 10px; flex-grow: 1; font-size: 0.9rem; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 4px; }
+.corner-popup .small-btn { padding: 8px 15px; font-size: 0.8rem; flex-shrink: 0; }
+
+/* --- Modální Okno (Výherní a Košík) --- */
+#modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 1050; opacity: 0; transition: opacity 0.4s ease-out; pointer-events: none; }
+#modal-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
+.modal { position: fixed; top: 50%; left: 50%; background-color: var(--bg-color); color: var(--text-color); padding: 30px 40px; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); z-index: 1060; width: 90%; opacity: 0; transition: opacity 0.3s ease-out, transform 0.3s ease-out; pointer-events: none; max-height: 85vh; overflow-y: auto; transform: translate(-50%, -50%) scale(0.95); }
+.modal:not(.hidden) { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
+.modal-content { } .modal h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--text-color); text-align: center;} .modal p { color: var(--primary-color); margin-bottom: 1.5rem; text-align: center; } .close-modal-btn { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 2rem; color: var(--primary-color); cursor: pointer; line-height: 1; padding: 5px; } .close-modal-btn:hover { color: var(--accent-color); }
+.modal.prize-modal { transform: translate(-50%, -50%) scale(0.9); background: linear-gradient(145deg, var(--secondary-color), var(--bg-color)); box-shadow: 0 8px 30px rgba(var(--accent-color-rgb), 0.3); max-width: 450px; border: 2px solid var(--primary-color); transition: opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); } .modal.prize-modal:not(.hidden) { transform: translate(-50%, -50%) scale(1); }
+.prize-modal .modal-content { text-align: center; } .prize-modal h2 { color: var(--accent-color); margin-bottom: 0.5rem; } .prize-emoji-big { font-size: 4rem; display: block; margin-bottom: 1rem; animation: emojiPop 0.5s ease-out; } @keyframes emojiPop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } } .prize-modal p { color: var(--text-color); margin-bottom: 0.8rem; font-size: 1.1rem; } .prize-text-emphasis { font-size: 1.4rem; font-weight: 700; color: var(--accent-color); margin-bottom: 1rem; } .prize-info-detail { font-size: 0.9rem; color: var(--primary-color); opacity: 0.9; margin-bottom: 1.5rem; } .close-modal-btn-bottom { margin-top: 1.5rem; }
+.cart-modal-view { max-width: 700px; padding: 25px 30px; transform: translate(-50%, -50%) scale(0.95); }
+.cart-modal-view h2 { margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 10px; } #cart-items-container { margin-bottom: 20px; max-height: 45vh; overflow-y: auto; padding-right: 10px; } .empty-cart-message { font-style: italic; color: var(--primary-color); text-align: center; padding: 40px 0; } .cart-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid var(--border-color); } .cart-item:last-child { border-bottom: none; } .cart-item-image img { width: 60px; height: 75px; object-fit: cover; border-radius: 4px; border: 1px solid var(--border-color); } .cart-item-details { flex-grow: 1; text-align: left; } .cart-item-details h4 { font-size: 1rem; margin-bottom: 3px; font-weight: 500; color: var(--text-color); } .cart-item-details .cart-item-price { font-size: 0.9rem; color: var(--primary-color); margin-bottom: 3px; } .cart-item-details .cart-item-size { font-size: 0.85rem; color: var(--primary-color); font-style: italic; } .cart-item-controls { display: flex; align-items: center; gap: 8px; } .cart-item-controls button { padding: 5px 8px; font-size: 0.8rem; min-width: 25px; background-color: var(--secondary-color); color: var(--text-color); border: 1px solid var(--border-color); } .cart-item-controls button:hover { background-color: var(--border-color); } .cart-item-controls input[type="number"] { width: 40px; text-align: center; padding: 5px; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--bg-color); color: var(--text-color); -moz-appearance: textfield; } .cart-item-controls input[type="number"]::-webkit-outer-spin-button, .cart-item-controls input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; } .cart-item-remove-btn { background: none; border: none; color: var(--primary-color); font-size: 1.2rem; cursor: pointer; padding: 5px; margin-left: 10px; } .cart-item-remove-btn:hover { color: var(--accent-color); } .cart-summary { margin-top: 20px; text-align: right; } .cart-summary hr { border: none; border-top: 1px dashed var(--border-color); margin: 15px 0; } .cart-summary p { font-size: 1.2rem; margin-bottom: 1rem; text-align: right;} #cart-total { font-weight: bold; color: var(--text-color); } #checkout-btn { float: right; }
+
+/* --- Footer --- */
+footer#footer { /* Používáme footer tag */ background-color: var(--secondary-color); color: var(--primary-color); padding: 35px 0; text-align: center; margin-top: 60px; border-top: 1px solid var(--border-color); } footer#footer .container { display: flex; flex-direction: column; align-items: center; gap: 1rem; } footer#footer p { margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--primary-color); opacity: 0.8;} .footer-links { margin-bottom: 1rem; } .footer-links a { margin: 0 10px; color: var(--primary-color); font-size: 0.9rem; transition: color 0.3s ease; } .footer-links a:first-child { margin-left: 0; } .footer-links a:hover { color: var(--accent-color); } .footer-divider { border: none; height: 1px; background-color: var(--border-color); width: 100%; margin: 0 0 15px 0; } .social-links a { margin: 0 10px; display: inline-block; transition: transform 0.3s ease; } .social-links img { width: 24px; height: 24px; opacity: 0.7; transition: opacity 0.3s ease; filter: var(--bg-color) == var(--bg-color-light) ? grayscale(80%) brightness(50%) contrast(100%) : grayscale(80%) brightness(150%) contrast(100%); } .social-links a:hover img { opacity: 1; } .social-links a:hover { transform: scale(1.1); }
+
+/* --- Responsivita --- */
+@media (max-width: 1100px) { .header-info { display: none; } }
+@media (max-width: 992px) { .container, .narrow-container { max-width: 960px; } h2 { font-size: 2.3rem; } .slide img { height: 400px; } .product-gallery { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); } #nav li { margin: 0 10px; } nav#nav a { font-size: 0.8rem; } }
+@media (max-width: 768px) {
+    h2 { font-size: 2rem; margin-bottom: 2rem; } h3 { font-size: 1.4rem; } .section { padding: 60px 0; } .container, .narrow-container { padding: 0 15px; }
+    #header .header-container { flex-wrap: wrap; justify-content: space-between; } #logo { order: 1; } .header-actions { order: 2; } nav#nav { order: 3; width: 100%; margin-top: 10px; } nav#nav ul { justify-content: center; }
+    .slide img { height: 350px; } .slide-caption { font-size: 1rem; bottom: 15px; left: 15px; padding: 8px 12px;} .slide-prev, .slide-next { width: 40px; height: 40px; font-size: 1.5rem; padding: 10px; line-height: 18px;} .slide-prev { left: 10px; } .slide-next { right: 10px; }
+    #onas h2, #onas h3, #onas .lead { text-align: center; } .timeline { margin-left: auto; margin-right: auto; } .timeline::before { left: 10px; } .timeline-event { margin-left: 30px; padding: 12px 20px; text-align: left; } .timeline-event::before { left: -26px; width: 10px; height: 10px; border-width: 2px;}
+    .home-subsection { margin-top: 40px; padding: 30px 15px; } .wheel-container { width: 260px; height: 260px; margin: 2rem auto; }
+    .contact-wrapper { flex-direction: column; gap: 30px; padding: 20px; } .contact-details, .contact-form-container { width: 100%; } .contact-details h3, .contact-form-container h3 { text-align: center; } #contact-form button { float: none; width: 100%; } .form-group.half-width { flex-basis: 100%; }
+    #login-dropdown { width: 250px; }
+    .cart-modal-view { max-width: 90%; } .cart-item { flex-wrap: wrap; gap: 10px; } .cart-item-image { flex-basis: 60px; } .cart-item-details { flex-basis: calc(100% - 80px); } .cart-item-controls { margin-left: auto; }
+    .modal.prize-modal { padding: 25px; }
+    .corner-popup { max-width: 280px; bottom: 10px; left: 50%; transform: translate(-50%, 110%); right: auto; }
+    .corner-popup:not(.hidden){ transform: translate(-50%, 0); }
+}
+@media (max-width: 576px) {
+    body { line-height: 1.6; } h2 { font-size: 1.8rem; } h3 { font-size: 1.3rem; } .section { padding: 50px 0; }
+    #logo h1 { order: 1; text-align: center; width: 100%; margin-bottom: 10px; } .header-actions { order: 2; position: absolute; top: 15px; right: 10px; gap: 10px;} nav#nav { order: 3; margin-top: 5px; } nav#nav ul { gap: 5px 15px;} nav#nav a { font-size: 0.8rem; padding-bottom: 5px; }
+    .slide img { height: 280px; } .slide-caption { display: none; }
+    .product-gallery { grid-template-columns: 1fr; gap: 30px; }
+    .timeline-event { padding: 10px 15px; } .timeline-event .year { font-size: 0.9rem; }
+    .home-subsection h3 { font-size: 1.5rem; } .wheel-container { width: 240px; height: 240px; } #wheel-pointer { font-size: 2.2rem; } #wheel-result { font-size: 1.1rem; }
+    form { gap: 1rem; } input[type="text"], input[type="email"], textarea, button, input[type="submit"], .cta-button { padding: 12px 18px; font-size: 0.85rem; }
+    #login-dropdown { width: calc(100% - 30px); right: 15px; left: 15px; /* Centrovat na mobilu */} #login-dropdown:not(.hidden) { transform: translateY(0); } #login-dropdown::before { right: 25px; }
+    .cart-modal-view { max-width: 95%; padding: 20px 15px; } .cart-item-controls { width: 100%; justify-content: space-between; margin-top: 10px;} .cart-item-remove-btn { margin-left: 0;}
+    .modal.prize-modal { width: 90%; padding: 25px; } .prize-modal h2 { font-size: 1.6rem; } .prize-emoji-big { font-size: 3rem; } .prize-modal p { font-size: 1rem; } .prize-text-emphasis { font-size: 1.2rem; }
+    footer#footer { padding: 30px 0; } footer#footer .container { display: flex; flex-direction: column; align-items: center; gap: 1rem; } footer#footer p { margin-bottom: 0.5rem; font-size: 0.8rem; } .footer-links { display: flex; flex-direction: column; gap: 5px; margin-bottom: 15px;} .footer-links a { margin: 0; } .social-links img { width: 22px; height: 22px; }
+    .corner-popup { width: calc(100% - 20px); left: 10px; right: 10px; transform: translate(0, 110%); }
+    .corner-popup:not(.hidden){ transform: translate(0, 0); }
+}
